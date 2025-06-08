@@ -1,3 +1,4 @@
+import 'package:assignment1/screens/profile.dart';
 import 'package:flutter/material.dart';
 import '/screens/category_page.dart';
 import '/screens/cart_screen.dart';
@@ -233,11 +234,10 @@ class _NavigationLayoutState extends State<NavigationLayout> {
   }
 
   void _navigateToProfile() {
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text('Profile page coming soon!'),
-        duration: Duration(seconds: 2),
-        backgroundColor: Color(0xFF5A5CE6),
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => ProfileScreen(),
       ),
     );
   }
