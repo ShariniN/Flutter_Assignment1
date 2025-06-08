@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import '/screens/category_page.dart';
-import '/screens/cart_screen.dart'; // Add this import
+import '/screens/cart_screen.dart';
 import '/data/product_data.dart';
 
 class NavigationLayout extends StatefulWidget {
@@ -45,33 +45,32 @@ class _NavigationLayoutState extends State<NavigationLayout> {
   }
 
   void _onTabChanged(int index) {
-    // Don't update state if we're already on the same tab
-    if (_currentIndex == index) return;
+    if (_currentIndex == index && index == 1) {
+      _showCategoriesBottomSheet();
+      return;
+    }
 
     setState(() {
       _currentIndex = index;
     });
 
-    // Call the parent's onTabChanged if provided
     if (widget.onTabChanged != null) {
       widget.onTabChanged!(index);
     }
 
     switch (index) {
       case 0:
-        // Navigate to Home
-        Navigator.pushNamedAndRemoveUntil(context, '/', (route) => false);
+        if (ModalRoute.of(context)?.settings.name != '/') {
+          Navigator.pushNamedAndRemoveUntil(context, '/', (route) => false);
+        }
         break;
       case 1:
-        // Show Categories bottom sheet
         _showCategoriesBottomSheet();
         break;
       case 2:
-        // Navigate to Cart
         _navigateToCart();
         break;
       case 3:
-        // Navigate to Profile
         _navigateToProfile();
         break;
     }
@@ -99,7 +98,6 @@ class _NavigationLayoutState extends State<NavigationLayout> {
       ),
       child: Column(
         children: [
-          // Handle bar
           Container(
             width: 40,
             height: 4,
@@ -109,7 +107,6 @@ class _NavigationLayoutState extends State<NavigationLayout> {
               borderRadius: BorderRadius.circular(2),
             ),
           ),
-          // Title
           Padding(
             padding: EdgeInsets.all(16),
             child: Text(
@@ -121,7 +118,6 @@ class _NavigationLayoutState extends State<NavigationLayout> {
               ),
             ),
           ),
-          // Categories grid
           Expanded(
             child: GridView.count(
               crossAxisCount: 2,
@@ -150,39 +146,62 @@ class _NavigationLayoutState extends State<NavigationLayout> {
   Widget _buildCategoryItem(String title, IconData icon, bool isDark, String categoryType) {
     return GestureDetector(
       onTap: () {
-        Navigator.pop(context); // Close the bottom sheet first
+        Navigator.pop(context);
         _navigateToCategory(categoryType);
       },
       child: Container(
         decoration: BoxDecoration(
-          color: isDark ? Colors.grey[800] : Colors.grey[100],
-          borderRadius: BorderRadius.circular(16),
+          gradient: LinearGradient(
+            colors: [Color(0xFF5A5CE6), Color(0xFF7C83FD)],
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
+          ),
+          borderRadius: BorderRadius.circular(18),
           boxShadow: [
             BoxShadow(
-              color: Colors.black,
-              blurRadius: 10,
-              offset: Offset(0, 4),
+              color: Color(0xFF5A5CE6).withOpacity(0.3),
+              blurRadius: 15,
+              offset: Offset(0, 6),
             ),
           ],
         ),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Icon(
-              icon,
-              size: 32,
-              color: isDark ? Colors.white70 : Colors.black54,
-            ),
-            SizedBox(height: 8),
-            Text(
-              title,
-              style: TextStyle(
-                fontSize: 16,
-                fontWeight: FontWeight.w600,
-                color: isDark ? Colors.white : Colors.black87,
+        child: Container(
+          margin: EdgeInsets.all(2),
+          decoration: BoxDecoration(
+            color: isDark ? Colors.grey[800] : Colors.white,
+            borderRadius: BorderRadius.circular(16),
+          ),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Container(
+                padding: EdgeInsets.all(12),
+                decoration: BoxDecoration(
+                  gradient: LinearGradient(
+                    colors: [Color(0xFF5A5CE6), Color(0xFF7C83FD)],
+                    begin: Alignment.topLeft,
+                    end: Alignment.bottomRight,
+                  ),
+                  shape: BoxShape.circle,
+                ),
+                child: Icon(
+                  icon,
+                  size: 28,
+                  color: Colors.white,
+                ),
               ),
-            ),
-          ],
+              SizedBox(height: 12),
+              Text(
+                title,
+                style: TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.w600,
+                  color: isDark ? Colors.white : Colors.black87,
+                ),
+                textAlign: TextAlign.center,
+              ),
+            ],
+          ),
         ),
       ),
     );
@@ -214,11 +233,11 @@ class _NavigationLayoutState extends State<NavigationLayout> {
   }
 
   void _navigateToProfile() {
-    // TODO: Implement profile navigation
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         content: Text('Profile page coming soon!'),
         duration: Duration(seconds: 2),
+        backgroundColor: Color(0xFF5A5CE6),
       ),
     );
   }
@@ -251,23 +270,21 @@ class _NavigationLayoutState extends State<NavigationLayout> {
         ),
         centerTitle: widget.showBackButton,
         actions: [
-          // Search button
           IconButton(
             icon: Icon(
               Icons.search,
               color: isDark ? Colors.white : Colors.black87,
             ),
             onPressed: () {
-              // TODO: Implement search functionality
               ScaffoldMessenger.of(context).showSnackBar(
                 SnackBar(
                   content: Text('Search functionality coming soon!'),
                   duration: Duration(seconds: 2),
+                  backgroundColor: Color(0xFF5A5CE6),
                 ),
               );
             },
           ),
-          // Cart button
           IconButton(
             icon: Icon(
               Icons.shopping_bag_outlined,
@@ -275,7 +292,6 @@ class _NavigationLayoutState extends State<NavigationLayout> {
             ),
             onPressed: _navigateToCart,
           ),
-          // Additional actions if provided
           if (widget.additionalActions != null)
             ...widget.additionalActions!,
           SizedBox(width: 8),

@@ -3,7 +3,7 @@ import '/widgets/product_card.dart';
 import '/widgets/navbar.dart';
 import '/widgets/product.dart';
 import '/data/product_data.dart';
-import 'product_screen.dart'; 
+import 'product_screen.dart';
 
 class CategoryPage extends StatefulWidget {
   final String categoryType;
@@ -77,18 +77,6 @@ class _CategoryPageState extends State<CategoryPage> {
     setState(() {
       _currentIndex = index;
     });
-    
-    switch (index) {
-      case 0:
-        Navigator.pop(context);
-        break;
-      case 1:
-        break;
-      case 2:
-        break;
-      case 3:
-        break;
-    }
   }
 
   void _showFiltersSheet() {
@@ -144,7 +132,7 @@ class _CategoryPageState extends State<CategoryPage> {
               padding: EdgeInsets.all(16),
               children: [
                 _buildPriceFilter(),
-                SizedBox(height: 16),
+                SizedBox(height: 24),
                 _buildBrandFilter(),
               ],
             ),
@@ -154,29 +142,23 @@ class _CategoryPageState extends State<CategoryPage> {
             child: SizedBox(
               width: double.infinity,
               height: 48,
-              child: GestureDetector(
-                onTap: () {
+              child: ElevatedButton(
+                onPressed: () {
                   Navigator.pop(context);
                   _applyFilters();
                 },
-                child: Container(
-                  decoration: BoxDecoration(
-                    color: Theme.of(context).brightness == Brightness.dark 
-                        ? Colors.white 
-                        : Colors.black,
-                    borderRadius: BorderRadius.circular(8),
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Theme.of(context).primaryColor,
+                  foregroundColor: Colors.white,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(12),
                   ),
-                  child: Center(
-                    child: Text(
-                      'Apply',
-                      style: TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.w600,
-                        color: Theme.of(context).brightness == Brightness.dark 
-                            ? Colors.black 
-                            : Colors.white,
-                      ),
-                    ),
+                ),
+                child: Text(
+                  'Apply Filters',
+                  style: TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.w600,
                   ),
                 ),
               ),
@@ -194,7 +176,7 @@ class _CategoryPageState extends State<CategoryPage> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          'Price',
+          'Price Range',
           style: Theme.of(context).textTheme.titleSmall?.copyWith(
             fontWeight: FontWeight.w600,
           ),
@@ -202,30 +184,12 @@ class _CategoryPageState extends State<CategoryPage> {
         SizedBox(height: 16),
         Row(
           children: [
-            Text(
-              'From',
-              style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                color: Colors.grey[600],
-              ),
-            ),
-            Spacer(),
-            Text(
-              'To',
-              style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                color: Colors.grey[600],
-              ),
-            ),
-          ],
-        ),
-        SizedBox(height: 8),
-        Row(
-          children: [
             Expanded(
               child: Container(
                 padding: EdgeInsets.symmetric(horizontal: 12, vertical: 8),
                 decoration: BoxDecoration(
-                  border: Border.all(color: Colors.grey[400]!),
-                  borderRadius: BorderRadius.circular(4),
+                  border: Border.all(color: Colors.grey.shade300),
+                  borderRadius: BorderRadius.circular(8),
                 ),
                 child: Text(
                   '\$${_priceRange.start.round()}',
@@ -238,8 +202,8 @@ class _CategoryPageState extends State<CategoryPage> {
               child: Container(
                 padding: EdgeInsets.symmetric(horizontal: 12, vertical: 8),
                 decoration: BoxDecoration(
-                  border: Border.all(color: Colors.grey[400]!),
-                  borderRadius: BorderRadius.circular(4),
+                  border: Border.all(color: Colors.grey.shade300),
+                  borderRadius: BorderRadius.circular(8),
                 ),
                 child: Text(
                   '\$${_priceRange.end.round()}',
@@ -254,10 +218,6 @@ class _CategoryPageState extends State<CategoryPage> {
           min: priceRange['min']!,
           max: priceRange['max']!,
           divisions: 50,
-          activeColor: Theme.of(context).brightness == Brightness.dark 
-              ? Colors.white 
-              : Colors.black,
-          inactiveColor: Colors.grey[300],
           onChanged: (RangeValues values) {
             setState(() {
               _priceRange = values;
@@ -280,64 +240,26 @@ class _CategoryPageState extends State<CategoryPage> {
         ),
         SizedBox(height: 16),
         Container(
-          height: 250,
+          height: 200,
           child: ListView.builder(
             itemCount: _brands.length,
             itemBuilder: (context, index) {
               final brand = _brands[index];
               final isSelected = _selectedBrands.contains(brand);
               
-              return GestureDetector(
-                onTap: () {
+              return CheckboxListTile(
+                title: Text(brand),
+                value: isSelected,
+                onChanged: (bool? value) {
                   setState(() {
-                    if (isSelected) {
-                      _selectedBrands.remove(brand);
-                    } else {
+                    if (value == true) {
                       _selectedBrands.add(brand);
+                    } else {
+                      _selectedBrands.remove(brand);
                     }
                   });
                 },
-                child: Container(
-                  padding: EdgeInsets.symmetric(vertical: 12),
-                  child: Row(
-                    children: [
-                      Container(
-                        width: 20,
-                        height: 20,
-                        decoration: BoxDecoration(
-                          color: isSelected 
-                              ? (Theme.of(context).brightness == Brightness.dark 
-                                  ? Colors.white 
-                                  : Colors.black)
-                              : Colors.transparent,
-                          border: Border.all(
-                            color: isSelected 
-                                ? (Theme.of(context).brightness == Brightness.dark 
-                                    ? Colors.white 
-                                    : Colors.black)
-                                : Colors.grey[400]!,
-                            width: 2,
-                          ),
-                          borderRadius: BorderRadius.circular(3),
-                        ),
-                        child: isSelected
-                            ? Icon(
-                                Icons.check,
-                                size: 14,
-                                color: Theme.of(context).brightness == Brightness.dark 
-                                    ? Colors.black 
-                                    : Colors.white,
-                              )
-                            : null,
-                      ),
-                      SizedBox(width: 12),
-                      Text(
-                        brand,
-                        style: Theme.of(context).textTheme.bodyMedium,
-                      ),
-                    ],
-                  ),
-                ),
+                contentPadding: EdgeInsets.zero,
               );
             },
           ),
@@ -349,91 +271,118 @@ class _CategoryPageState extends State<CategoryPage> {
   Widget _buildProductCard(Product product) {
     return Container(
       decoration: BoxDecoration(
-        color: Theme.of(context).cardColor,
-        borderRadius: BorderRadius.circular(12),
+        gradient: LinearGradient(
+          colors: [Color(0xFF5A5CE6), Color(0xFF7C83FD)],
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+        ),
+        borderRadius: BorderRadius.circular(14),
         boxShadow: [
           BoxShadow(
-            color: Colors.black12,
-            blurRadius: 4,
-            offset: Offset(0, 2),
+            color: Color(0xFF5A5CE6).withOpacity(0.2),
+            blurRadius: 10,
+            offset: Offset(0, 4),
           ),
         ],
       ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Expanded(
-            flex: 3,
-            child: Container(
-              width: double.infinity,
-              padding: EdgeInsets.all(16),
-              child: product.hasValidImage
-                  ? ClipRRect(
-                      borderRadius: BorderRadius.circular(8),
-                      child: Image.asset(
-                        product.imageUrl,
-                        fit: BoxFit.contain,
-                      ),
-                    )
-                  : Container(),
-            ),
-          ),
-          Expanded(
-            flex: 2,
-            child: Padding(
-              padding: EdgeInsets.all(12),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    product.title,
-                    style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                      fontWeight: FontWeight.w600,
-                    ),
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
-                  ),
-                  SizedBox(height: 4),
-                  Text(
-                    product.subtitle,
-                    style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                      color: Colors.grey[600],
-                    ),
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
-                  ),
-                  Spacer(),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(
-                        '\$${product.price}',
-                        style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                          fontWeight: FontWeight.bold,
-                          color: Theme.of(context).primaryColor,
+      child: Container(
+        margin: EdgeInsets.all(2),
+        decoration: BoxDecoration(
+          color: Theme.of(context).cardColor,
+          borderRadius: BorderRadius.circular(12),
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Expanded(
+              flex: 3,
+              child: Container(
+                width: double.infinity,
+                padding: EdgeInsets.all(12),
+                decoration: BoxDecoration(
+                  color: Colors.grey.shade50,
+                  borderRadius: BorderRadius.vertical(top: Radius.circular(12)),
+                ),
+                child: product.hasValidImage
+                    ? ClipRRect(
+                        borderRadius: BorderRadius.circular(8),
+                        child: Image.asset(
+                          product.imageUrl,
+                          fit: BoxFit.contain,
+                        ),
+                      )
+                    : Container(
+                        decoration: BoxDecoration(
+                          color: Colors.grey.shade200,
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                        child: Icon(
+                          Icons.image,
+                          size: 40,
+                          color: Colors.grey.shade400,
                         ),
                       ),
-                      Row(
-                        children: [
-                          Icon(
-                            Icons.star,
-                            size: 16,
-                            color: Colors.amber,
-                          ),
-                          SizedBox(width: 2),
-                          Text(
-                            '${product.rating}',
-                            style: Theme.of(context).textTheme.bodySmall,
-                          ),
-                        ],
-                      ),
-                    ],
-                  ),
-                ],
               ),
             ),
-          ),
-        ],
+            Expanded(
+              flex: 2,
+              child: Padding(
+                padding: EdgeInsets.all(12),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Text(
+                      product.title,
+                      style: Theme.of(context).textTheme.titleSmall?.copyWith(
+                        fontWeight: FontWeight.w600,
+                      ),
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                    SizedBox(height: 2),
+                    Text(
+                      product.subtitle,
+                      style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                        color: Colors.grey[600],
+                      ),
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                    Spacer(),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          '\${product.price}',
+                          style: Theme.of(context).textTheme.titleSmall?.copyWith(
+                            fontWeight: FontWeight.bold,
+                            color: Colors.white,
+                          ),
+                        ),
+                        Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Icon(
+                              Icons.star,
+                              size: 14,
+                              color: Colors.amber,
+                            ),
+                            SizedBox(width: 2),
+                            Text(
+                              '${product.rating}',
+                              style: Theme.of(context).textTheme.bodySmall,
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -441,7 +390,7 @@ class _CategoryPageState extends State<CategoryPage> {
   @override
   Widget build(BuildContext context) {
     final isLandscape = MediaQuery.of(context).orientation == Orientation.landscape;
-    final screenHeight = MediaQuery.of(context).size.height;
+    final hasActiveFilters = _selectedBrands.isNotEmpty;
     
     return NavigationLayout(
       title: widget.categoryName,
@@ -450,104 +399,64 @@ class _CategoryPageState extends State<CategoryPage> {
       body: Column(
         children: [
           Container(
-            padding: EdgeInsets.all(isLandscape ? 8 : 16),
+            padding: EdgeInsets.all(16),
             decoration: BoxDecoration(
               color: Theme.of(context).scaffoldBackgroundColor,
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.black,
-                  blurRadius: 4,
-                  offset: Offset(0, 2),
+              border: Border(
+                bottom: BorderSide(
+                  color: Colors.grey.shade200,
+                  width: 1,
                 ),
-              ],
+              ),
             ),
             child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Expanded(
-                  child: Container(
-                    height: isLandscape ? 32 : 40,
-                    decoration: BoxDecoration(
-                      color: Theme.of(context).cardColor,
-                      borderRadius: BorderRadius.circular(8),
-                    ),
-                    child: Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 12),
-                      child: Row(
-                        children: [
-                          Icon(
-                            ProductData.getCategoryIcons()[widget.categoryType] ?? Icons.category,
-                            color: Theme.of(context).iconTheme.color,
-                            size: isLandscape ? 16 : 20,
-                          ),
-                          SizedBox(width: 8),
-                          Text(
-                            widget.categoryName,
-                            style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                              fontSize: isLandscape ? 14 : 16,
-                              fontWeight: FontWeight.w500,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
+                Text(
+                  '${_filteredProducts.length} products',
+                  style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                    color: Colors.grey[600],
                   ),
                 ),
-                SizedBox(width: 12),
-                GestureDetector(
-                  onTap: () {},
-                  child: Icon(
-                    Icons.menu,
-                    color: Theme.of(context).iconTheme.color,
-                    size: isLandscape ? 20 : 24,
-                  ),
-                ),
-              ],
-            ),
-          ),
-          
-          Container(
-            padding: EdgeInsets.symmetric(
-              horizontal: isLandscape ? 8 : 16, 
-              vertical: isLandscape ? 6 : 12
-            ),
-            decoration: BoxDecoration(
-              color: Theme.of(context).cardColor,
-            ),
-            child: Row(
-              children: [
                 GestureDetector(
                   onTap: _showFiltersSheet,
                   child: Container(
-                    padding: EdgeInsets.symmetric(
-                      horizontal: isLandscape ? 8 : 12, 
-                      vertical: isLandscape ? 4 : 8
-                    ),
+                    padding: EdgeInsets.symmetric(horizontal: 12, vertical: 6),
                     decoration: BoxDecoration(
-                      border: Border.all(color: Colors.grey[400]!),
-                      borderRadius: BorderRadius.circular(6),
+                      border: Border.all(
+                        color: hasActiveFilters 
+                            ? Theme.of(context).primaryColor 
+                            : Colors.grey.shade300,
+                      ),
+                      borderRadius: BorderRadius.circular(8),
                     ),
                     child: Row(
                       mainAxisSize: MainAxisSize.min,
                       children: [
-                        Text(
-                          'Filters',
-                          style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                            fontSize: isLandscape ? 12 : 14,
-                          ),
-                        ),
-                        SizedBox(width: 4),
                         Icon(
                           Icons.tune,
-                          size: isLandscape ? 14 : 16,
-                          color: Theme.of(context).iconTheme.color,
+                          size: 16,
+                          color: hasActiveFilters 
+                              ? Theme.of(context).primaryColor 
+                              : Colors.grey[600],
                         ),
-                        if (_selectedBrands.isNotEmpty)
+                        SizedBox(width: 4),
+                        Text(
+                          'Filter',
+                          style: TextStyle(
+                            fontSize: 14,
+                            color: hasActiveFilters 
+                                ? Theme.of(context).primaryColor 
+                                : Colors.grey[600],
+                          ),
+                        ),
+                        if (hasActiveFilters)
                           Container(
                             margin: EdgeInsets.only(left: 4),
-                            width: 8,
-                            height: 8,
+                            width: 6,
+                            height: 6,
                             decoration: BoxDecoration(
-                              color: Colors.red,
+                              color: Theme.of(context).primaryColor,
                               shape: BoxShape.circle,
                             ),
                           ),
@@ -558,22 +467,6 @@ class _CategoryPageState extends State<CategoryPage> {
               ],
             ),
           ),
-          
-          if (!isLandscape || screenHeight > 500)
-            Container(
-              padding: EdgeInsets.symmetric(
-                horizontal: isLandscape ? 8 : 16, 
-                vertical: isLandscape ? 4 : 8
-              ),
-              alignment: Alignment.centerLeft,
-              child: Text(
-                'Products Result: ${_filteredProducts.length}',
-                style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                  fontSize: isLandscape ? 12 : 14,
-                  color: Colors.grey[600],
-                ),
-              ),
-            ),
           
           Expanded(
             child: _filteredProducts.isEmpty
@@ -604,13 +497,13 @@ class _CategoryPageState extends State<CategoryPage> {
                     ),
                   )
                 : Padding(
-                    padding: EdgeInsets.symmetric(horizontal: isLandscape ? 8 : 16),
+                    padding: EdgeInsets.all(16),
                     child: GridView.builder(
                       gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                         crossAxisCount: isLandscape ? 3 : 2,
-                        childAspectRatio: isLandscape ? 0.9 : 0.8,
-                        crossAxisSpacing: isLandscape ? 8 : 12,
-                        mainAxisSpacing: isLandscape ? 8 : 12,
+                        childAspectRatio: isLandscape ? 0.9 : 0.75,
+                        crossAxisSpacing: 12,
+                        mainAxisSpacing: 12,
                       ),
                       itemCount: _filteredProducts.length,
                       itemBuilder: (context, index) {
