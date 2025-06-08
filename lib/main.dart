@@ -11,7 +11,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Apple Store UI',
+      title: 'Electronics Store',
       theme: ThemeData(
         brightness: Brightness.light,
         primarySwatch: Colors.blue,
