@@ -119,6 +119,7 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
     final colorScheme = theme.colorScheme;
     List<Widget> items = [];
 
+    // Product image section
     items.add(
       Container(
         height: 400,
@@ -131,14 +132,31 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                 child: SizedBox(
                   height: 350,
                   width: 250,
-                  child: Icon(
-                    widget.product.icon,
-                    size: 200,
-                    color: colorScheme.onSurface,
-                  ),
+                  child: widget.product.hasValidImage
+                      ? ClipRRect(
+                          borderRadius: BorderRadius.circular(12),
+                          child: Image.asset(
+                            widget.product.imageUrl,
+                            fit: BoxFit.contain,
+                            errorBuilder: (context, error, stackTrace) {
+                              // Fallback to icon if image fails to load
+                              return Icon(
+                                widget.product.categoryIcon,
+                                size: 200,
+                                color: colorScheme.onSurface.withOpacity(0.6),
+                              );
+                            },
+                          ),
+                        )
+                      : Icon(
+                          widget.product.categoryIcon,
+                          size: 200,
+                          color: colorScheme.onSurface.withOpacity(0.6),
+                        ),
                 ),
               ),
             ),
+            // Image indicators
             Padding(
               padding: const EdgeInsets.only(bottom: 20),
               child: Row(
@@ -161,6 +179,7 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
       ),
     );
 
+    // Product info section
     items.add(
       Padding(
         padding: const EdgeInsets.fromLTRB(20, 20, 20, 0),
@@ -216,6 +235,7 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
       ),
     );
 
+    // Color selection section
     if (colors.length > 1 && colors.first['name'] != 'Default') {
       items.add(
         Padding(
@@ -281,6 +301,7 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
       );
     }
 
+    // Variant selection section
     if (variantOptions.length > 1) {
       String variantLabel = _getVariantLabel();
       items.add(
@@ -340,6 +361,7 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
       );
     }
 
+    // Features section
     for (var feature in productFeatures) {
       items.add(
         Padding(
@@ -354,6 +376,7 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
       );
     }
 
+    // Details section
     items.add(
       Padding(
         padding: const EdgeInsets.fromLTRB(20, 30, 20, 0),
@@ -382,6 +405,7 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
       ),
     );
 
+    // Specifications section
     items.add(
       Padding(
         padding: const EdgeInsets.fromLTRB(20, 30, 20, 0),

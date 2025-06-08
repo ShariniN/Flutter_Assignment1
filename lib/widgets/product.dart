@@ -10,7 +10,7 @@ class Product {
   final Color? color;
   final String category;
   final double rating;
-  final String imageUrl; 
+  final String imageUrl;
 
   Product({
     required this.id,
@@ -21,8 +21,27 @@ class Product {
     this.color,
     required this.category,
     this.rating = 4.0,
-    this.imageUrl = '',
+    required this.imageUrl, // Made this required since we're using images
   });
-  
- 
+
+  // Helper method to get category icon (for use in other parts of the app)
+  IconData get categoryIcon {
+    switch (category) {
+      case 'phone':
+        return Icons.smartphone;
+      case 'laptop':
+        return Icons.laptop;
+      case 'audio':
+        return Icons.headphones;
+      case 'wearables':
+        return Icons.watch;
+      case 'accessories':
+        return Icons.cable;
+      default:
+        return Icons.category;
+    }
+  }
+
+  // Helper method to check if image exists/is valid
+  bool get hasValidImage => imageUrl.isNotEmpty;
 }
