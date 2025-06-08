@@ -7,11 +7,10 @@ class Product {
   final String subtitle;
   final double price;
   final String brand;
-  final IconData icon;
   final Color? color;
   final String category;
   final double rating;
-  final String imageUrl; // You can add this for real images later
+  final String imageUrl; 
 
   Product({
     required this.id,
@@ -19,7 +18,6 @@ class Product {
     required this.subtitle,
     required this.price,
     required this.brand,
-    required this.icon,
     this.color,
     required this.category,
     this.rating = 4.0,

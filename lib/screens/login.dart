@@ -288,7 +288,6 @@ class _AuthScreenState extends State<AuthScreen> {
                 ),
                 SizedBox(height: 50),
                 
-                // Auth Toggle
                 Container(
                   decoration: BoxDecoration(
                     color: Colors.grey[100],

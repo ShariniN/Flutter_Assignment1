@@ -6,7 +6,7 @@ class ProductCard extends StatelessWidget {
   final String title;
   final String subtitle;
   final String price;
-  final Color? color; // Made optional to allow theme-based coloring
+  final Color? color; 
   final IconData icon;
 
   const ProductCard({
@@ -14,7 +14,7 @@ class ProductCard extends StatelessWidget {
     required this.title,
     required this.subtitle,
     required this.price,
-    this.color, // No longer required
+    this.color, 
     required this.icon,
   }) : super(key: key);
 
@@ -26,7 +26,7 @@ class ProductCard extends StatelessWidget {
     return Container(
       height: 160,
       decoration: BoxDecoration(
-        color: color ?? theme.cardColor, // Use theme cardColor as fallback
+        color: color ?? theme.cardColor, 
         borderRadius: BorderRadius.circular(16),
       ),
       child: Padding(

@@ -32,7 +32,6 @@ class _ElectronicsStoreState extends State<ElectronicsStore> {
         ),
       ),
       
-      // AirPods & Apple Watch Row
       Padding(
         padding: EdgeInsets.all(16),
         child: Row(
@@ -60,7 +59,6 @@ class _ElectronicsStoreState extends State<ElectronicsStore> {
         ),
       ),
       
-      // iPhone & AirPods Row + Categories
       Padding(
         padding: EdgeInsets.symmetric(horizontal: 16),
         child: Column(
@@ -107,10 +105,8 @@ class _ElectronicsStoreState extends State<ElectronicsStore> {
         ),
       ),
       
-      // Spacer
       SizedBox(height: 16),
       
-      // Large Product Cards
       LargeProductCard(
         title: 'Apple',
         subtitle: 'iPhone Max',
@@ -140,8 +136,7 @@ class _ElectronicsStoreState extends State<ElectronicsStore> {
         subtitle: '',
         backgroundColor: isDark ? Color(0xFF2D3748) : Color(0xFFfce4ec),
       ),
-      
-      // Sale Banner
+
       Container(
         height: 200,
         width: double.infinity,
@@ -186,7 +181,6 @@ class _ElectronicsStoreState extends State<ElectronicsStore> {
         ),
       ),
       
-      // Bottom Spacer
       SizedBox(height: 100),
     ];
   }
