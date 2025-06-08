@@ -159,9 +159,9 @@ class _NavigationLayoutState extends State<NavigationLayout> {
           borderRadius: BorderRadius.circular(18),
           boxShadow: [
             BoxShadow(
-              color: Color(0xFF5A5CE6).withOpacity(0.3),
-              blurRadius: 15,
-              offset: Offset(0, 6),
+              color: Color(0xFF5A5CE6), 
+              blurRadius: 1,
+              
             ),
           ],
         ),
@@ -302,7 +302,7 @@ class _NavigationLayoutState extends State<NavigationLayout> {
         decoration: BoxDecoration(
           boxShadow: [
             BoxShadow(
-              color: Colors.black.withOpacity(0.1),
+              color: Colors.black,
               blurRadius: 10,
               offset: Offset(0, -2),
             ),
