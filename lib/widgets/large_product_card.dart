@@ -5,7 +5,6 @@ class LargeProductCard extends StatelessWidget {
   final String subtitle;
   final Color backgroundColor;
 
-  // ignore: use_super_parameters
   const LargeProductCard({
     Key? key,
     required this.title,
@@ -72,12 +71,13 @@ class LargeProductCard extends StatelessWidget {
           ? Border.all(color: Colors.grey[800]!, width: 1)
           : null,
       ),
-      child: ClipRRect(
+      child: Material(
         borderRadius: BorderRadius.circular(20),
         child: Stack(
           children: [
             Container(
               decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(20),
                 gradient: LinearGradient(
                   begin: Alignment.topCenter,
                   end: Alignment.bottomCenter,
@@ -114,20 +114,6 @@ class LargeProductCard extends StatelessWidget {
                     maxLines: 2,
                     overflow: TextOverflow.ellipsis,
                   ),
-                  
-                  if (subtitle.isNotEmpty) ...[
-                    SizedBox(height: 4),
-                    Text(
-                      subtitle,
-                      style: TextStyle(
-                        color: isDark ? Colors.grey[400] : Colors.grey[600],
-                        fontSize: 14,
-                        fontWeight: FontWeight.w400,
-                      ),
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
-                    ),
-                  ],
                   
                   SizedBox(height: 12),
                   
