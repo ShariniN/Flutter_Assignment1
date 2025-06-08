@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import '/widgets/product.dart';
-import '/widgets/cart.dart';
+import '../models/product.dart';
+import '../models/cart.dart';
 import '/widgets/navbar.dart'; 
 import '/data/product_data.dart';
 
@@ -138,7 +138,7 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
             end: Alignment.bottomRight,
             colors: [
               colorScheme.surface,
-              colorScheme.surfaceVariant.withOpacity(0.3),
+              colorScheme.surface,
             ],
           ),
           border: Border.all(
@@ -152,9 +152,9 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
               begin: Alignment.topLeft,
               end: Alignment.bottomRight,
               colors: [
-                colorScheme.primary.withOpacity(0.1),
-                colorScheme.secondary.withOpacity(0.1),
-                colorScheme.tertiary.withOpacity(0.1),
+                colorScheme.primary,
+                colorScheme.secondary,
+                colorScheme.tertiary,
               ],
             ),
             borderRadius: BorderRadius.circular(1),

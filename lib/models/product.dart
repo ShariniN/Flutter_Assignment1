@@ -21,10 +21,9 @@ class Product {
     this.color,
     required this.category,
     this.rating = 4.0,
-    required this.imageUrl, // Made this required since we're using images
+    required this.imageUrl, 
   });
 
-  // Helper method to get category icon (for use in other parts of the app)
   IconData get categoryIcon {
     switch (category) {
       case 'phone':
@@ -42,6 +41,5 @@ class Product {
     }
   }
 
-  // Helper method to check if image exists/is valid
   bool get hasValidImage => imageUrl.isNotEmpty;
 }

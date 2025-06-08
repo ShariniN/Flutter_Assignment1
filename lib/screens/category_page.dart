@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import '/widgets/navbar.dart';
-import '/widgets/product.dart';
+import '/models/product.dart';
 import '/data/product_data.dart';
 import 'product_screen.dart';
 
@@ -278,7 +278,7 @@ class _CategoryPageState extends State<CategoryPage> {
         borderRadius: BorderRadius.circular(14),
         boxShadow: [
           BoxShadow(
-            color: Color(0xFF5A5CE6).withOpacity(0.2),
+            color: Color(0xFF5A5CE6),
             blurRadius: 10,
             offset: Offset(0, 4),
           ),

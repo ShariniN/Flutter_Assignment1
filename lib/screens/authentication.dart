@@ -1,215 +1,11 @@
 import 'package:flutter/material.dart';
-
-void main() {
-  runApp(ElectronicsApp());
-}
-
-class ElectronicsApp extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'TechStore',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-        scaffoldBackgroundColor: Colors.white,
-        fontFamily: 'Roboto',
-      ),
-      home: OnboardingScreen(),
-      debugShowCheckedModeBanner: false,
-    );
-  }
-}
-
-class OnboardingScreen extends StatefulWidget {
-  @override
-  _OnboardingScreenState createState() => _OnboardingScreenState();
-}
-
-class _OnboardingScreenState extends State<OnboardingScreen> {
-  PageController _pageController = PageController();
-  int currentIndex = 0;
-
-  final List<OnboardingItem> onboardingItems = [
-    OnboardingItem(
-      title: "Latest Electronics",
-      description: "Discover cutting-edge smartphones, laptops, and gadgets from top brands worldwide",
-      image: "📱",
-    ),
-    OnboardingItem(
-      title: "Secure Shopping",
-      description: "Shop with confidence using our secure payment system and buyer protection",
-      image: "🔒",
-    ),
-    OnboardingItem(
-      title: "Fast Delivery",
-      description: "Get your electronics delivered quickly with our express shipping options",
-      image: "🚚",
-    ),
-  ];
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      body: Container(
-        padding: EdgeInsets.only(top: 50),
-        child: Column(
-          children: [
-            Expanded(
-              child: ListView.builder(
-                controller: _pageController,
-                scrollDirection: Axis.horizontal,
-                itemCount: onboardingItems.length,
-                itemBuilder: (context, index) {
-                  return SizedBox(
-                    width: MediaQuery.of(context).size.width,
-                    child: OnboardingPage(item: onboardingItems[index]),
-                  );
-                },
-              ),
-            ),
-            Padding(
-              padding: EdgeInsets.all(20),
-              child: Column(
-                children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: List.generate(
-                      onboardingItems.length,
-                      (index) => Container(
-                        margin: EdgeInsets.symmetric(horizontal: 4),
-                        height: 8,
-                        width: currentIndex == index ? 24 : 8,
-                        decoration: BoxDecoration(
-                          color: currentIndex == index
-                              ? Colors.blue
-                              : Colors.grey[300],
-                          borderRadius: BorderRadius.circular(4),
-                        ),
-                      ),
-                    ),
-                  ),
-                  SizedBox(height: 30),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      TextButton(
-                        onPressed: () {
-                          Navigator.pushReplacement(
-                            context,
-                            MaterialPageRoute(builder: (context) => AuthScreen()),
-                          );
-                        },
-                        child: Text("Skip", style: TextStyle(color: Colors.grey[600])),
-                      ),
-                      ElevatedButton(
-                        onPressed: () {
-                          if (currentIndex == onboardingItems.length - 1) {
-                            Navigator.pushReplacement(
-                              context,
-                              MaterialPageRoute(builder: (context) => AuthScreen()),
-                            );
-                          } else {
-                            setState(() {
-                              currentIndex++;
-                            });
-                            _pageController.animateToPage(
-                              currentIndex,
-                              duration: Duration(milliseconds: 300),
-                              curve: Curves.easeInOut,
-                            );
-                          }
-                        },
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: Colors.blue,
-                          padding: EdgeInsets.symmetric(horizontal: 32, vertical: 16),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(25),
-                          ),
-                        ),
-                        child: Text(
-                          currentIndex == onboardingItems.length - 1 ? "Get Started" : "Next",
-                          style: TextStyle(color: Colors.white, fontSize: 16),
-                        ),
-                      ),
-                    ],
-                  ),
-                ],
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-}
-
-class OnboardingPage extends StatelessWidget {
-  final OnboardingItem item;
-
-  const OnboardingPage({required this.item});
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: EdgeInsets.all(40),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Container(
-            height: 200,
-            width: 200,
-            decoration: BoxDecoration(
-              color: Colors.blue[50],
-              borderRadius: BorderRadius.circular(100),
-            ),
-            child: Center(
-              child: Text(
-                item.image,
-                style: TextStyle(fontSize: 80),
-              ),
-            ),
-          ),
-          SizedBox(height: 50),
-          Text(
-            item.title,
-            style: TextStyle(
-              fontSize: 28,
-              fontWeight: FontWeight.bold,
-              color: Colors.black87,
-            ),
-            textAlign: TextAlign.center,
-          ),
-          SizedBox(height: 20),
-          Text(
-            item.description,
-            style: TextStyle(
-              fontSize: 16,
-              color: Colors.grey[600],
-              height: 1.5,
-            ),
-            textAlign: TextAlign.center,
-          ),
-        ],
-      ),
-    );
-  }
-}
-
-class OnboardingItem {
-  final String title;
-  final String description;
-  final String image;
-
-  OnboardingItem({
-    required this.title,
-    required this.description,
-    required this.image,
-  });
-}
+import 'electronics_store.dart';
 
 class AuthScreen extends StatefulWidget {
+  const AuthScreen({super.key});
+
   @override
-  _AuthScreenState createState() => _AuthScreenState();
+  State<AuthScreen> createState() => _AuthScreenState();
 }
 
 class _AuthScreenState extends State<AuthScreen> {
@@ -246,49 +42,60 @@ class _AuthScreenState extends State<AuthScreen> {
     });
   }
 
+  void _navigateToStore() {
+    Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(builder: (context) => ElectronicsStore()),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final isDark = theme.brightness == Brightness.dark;
+    
     return Scaffold(
+      backgroundColor: theme.scaffoldBackgroundColor,
       body: Container(
-        padding: EdgeInsets.only(top: 50),
+        padding: const EdgeInsets.only(top: 50),
         child: SingleChildScrollView(
           child: Padding(
-            padding: EdgeInsets.all(24),
-            child: ListView(
+            padding: const EdgeInsets.all(24),
+            child: Column(
               children: [
-                SizedBox(height: 40),
+                const SizedBox(height: 40),
                 Column(
                   children: [
                     Container(
                       height: 80,
                       width: 80,
                       decoration: BoxDecoration(
-                        color: Colors.blue,
+                        color: theme.primaryColor,
                         borderRadius: BorderRadius.circular(20),
                       ),
-                      child: Icon(
+                      child: const Icon(
                         Icons.shopping_cart,
                         color: Colors.white,
                         size: 40,
                       ),
                     ),
-                    SizedBox(height: 16),
+                    const SizedBox(height: 16),
                     Text(
-                      "TechStore",
+                      "Electronics Store",
                       style: TextStyle(
                         fontSize: 32,
                         fontWeight: FontWeight.bold,
-                        color: Colors.black87,
+                        color: isDark ? Colors.white : Colors.black87,
                       ),
                     ),
-                    SizedBox(height: 8),
+                    const SizedBox(height: 8),
                   ],
                 ),
-                SizedBox(height: 50),
+                const SizedBox(height: 50),
                 
                 Container(
                   decoration: BoxDecoration(
-                    color: Colors.grey[100],
+                    color: theme.cardColor,
                     borderRadius: BorderRadius.circular(25),
                   ),
                   child: Row(
@@ -299,16 +106,16 @@ class _AuthScreenState extends State<AuthScreen> {
                             if (!isLogin) toggleAuthMode();
                           },
                           child: Container(
-                            padding: EdgeInsets.symmetric(vertical: 16),
+                            padding: const EdgeInsets.symmetric(vertical: 16),
                             decoration: BoxDecoration(
-                              color: isLogin ? Colors.blue : Colors.transparent,
+                              color: isLogin ? theme.primaryColor : Colors.transparent,
                               borderRadius: BorderRadius.circular(25),
                             ),
                             child: Text(
                               "Login",
                               textAlign: TextAlign.center,
                               style: TextStyle(
-                                color: isLogin ? Colors.white : Colors.grey[600],
+                                color: isLogin ? Colors.white : (isDark ? Colors.grey[300] : Colors.grey[600]),
                                 fontWeight: FontWeight.w600,
                               ),
                             ),
@@ -321,16 +128,16 @@ class _AuthScreenState extends State<AuthScreen> {
                             if (isLogin) toggleAuthMode();
                           },
                           child: Container(
-                            padding: EdgeInsets.symmetric(vertical: 16),
+                            padding: const EdgeInsets.symmetric(vertical: 16),
                             decoration: BoxDecoration(
-                              color: !isLogin ? Colors.blue : Colors.transparent,
+                              color: !isLogin ? theme.primaryColor : Colors.transparent,
                               borderRadius: BorderRadius.circular(25),
                             ),
                             child: Text(
                               "Register",
                               textAlign: TextAlign.center,
                               style: TextStyle(
-                                color: !isLogin ? Colors.white : Colors.grey[600],
+                                color: !isLogin ? Colors.white : (isDark ? Colors.grey[300] : Colors.grey[600]),
                                 fontWeight: FontWeight.w600,
                               ),
                             ),
@@ -340,7 +147,7 @@ class _AuthScreenState extends State<AuthScreen> {
                     ],
                   ),
                 ),
-                SizedBox(height: 30),
+                const SizedBox(height: 30),
 
                 isLogin ? _buildLoginForm() : _buildRegisterForm(),
               ],
@@ -352,6 +159,8 @@ class _AuthScreenState extends State<AuthScreen> {
   }
 
   Widget _buildLoginForm() {
+    final theme = Theme.of(context);
+    
     return Form(
       key: _loginFormKey,
       child: Column(
@@ -371,7 +180,7 @@ class _AuthScreenState extends State<AuthScreen> {
               return null;
             },
           ),
-          SizedBox(height: 16),
+          const SizedBox(height: 16),
           _buildTextField(
             controller: _loginPasswordController,
             label: "Password",
@@ -392,25 +201,27 @@ class _AuthScreenState extends State<AuthScreen> {
               return null;
             },
           ),
-          SizedBox(height: 24),
+          const SizedBox(height: 24),
           ElevatedButton(
             onPressed: () {
               if (_loginFormKey.currentState!.validate()) {
                 ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(content: Text('Login successful!')),
+                  const SnackBar(content: Text('Login successful!')),
                 );
+                _navigateToStore();
               }
             },
             style: ElevatedButton.styleFrom(
-              backgroundColor: Colors.blue,
-              padding: EdgeInsets.symmetric(vertical: 16),
+              backgroundColor: theme.primaryColor,
+              foregroundColor: Colors.white,
+              padding: const EdgeInsets.symmetric(vertical: 16),
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(12),
               ),
             ),
-            child: Text(
+            child: const Text(
               "Login",
-              style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600, color: Colors.white),
+              style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
             ),
           ),
         ],
@@ -419,6 +230,8 @@ class _AuthScreenState extends State<AuthScreen> {
   }
 
   Widget _buildRegisterForm() {
+    final theme = Theme.of(context);
+    
     List<Widget> formFields = [
       _buildTextField(
         controller: _registerNameController,
@@ -431,7 +244,7 @@ class _AuthScreenState extends State<AuthScreen> {
           return null;
         },
       ),
-      SizedBox(height: 16),
+      const SizedBox(height: 16),
       _buildTextField(
         controller: _registerEmailController,
         label: "Email",
@@ -446,7 +259,7 @@ class _AuthScreenState extends State<AuthScreen> {
           return null;
         },
       ),
-      SizedBox(height: 16),
+      const SizedBox(height: 16),
       _buildTextField(
         controller: _registerPasswordController,
         label: "Password",
@@ -470,7 +283,7 @@ class _AuthScreenState extends State<AuthScreen> {
           return null;
         },
       ),
-      SizedBox(height: 16),
+      const SizedBox(height: 16),
       _buildTextField(
         controller: _registerConfirmPasswordController,
         label: "Confirm Password",
@@ -494,25 +307,27 @@ class _AuthScreenState extends State<AuthScreen> {
           return null;
         },
       ),
-      SizedBox(height: 24),
+      const SizedBox(height: 24),
       ElevatedButton(
         onPressed: () {
           if (_registerFormKey.currentState!.validate()) {
             ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(content: Text('Registration successful!')),
+              const SnackBar(content: Text('Registration successful!')),
             );
+            _navigateToStore();
           }
         },
         style: ElevatedButton.styleFrom(
-          backgroundColor: Colors.blue,
-          padding: EdgeInsets.symmetric(vertical: 16),
+          backgroundColor: theme.primaryColor,
+          foregroundColor: Colors.white,
+          padding: const EdgeInsets.symmetric(vertical: 16),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(12),
           ),
         ),
-        child: Text(
+        child: const Text(
           "Create Account",
-          style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600, color: Colors.white),
+          style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
         ),
       ),
     ];
@@ -534,32 +349,48 @@ class _AuthScreenState extends State<AuthScreen> {
     Widget? suffixIcon,
     String? Function(String?)? validator,
   }) {
+    final theme = Theme.of(context);
+    final isDark = theme.brightness == Brightness.dark;
+    
     return TextFormField(
       controller: controller,
       obscureText: obscureText,
       validator: validator,
+      style: TextStyle(
+        color: isDark ? Colors.white : Colors.black,
+      ),
       decoration: InputDecoration(
         labelText: label,
-        prefixIcon: Icon(icon),
+        labelStyle: TextStyle(
+          color: isDark ? Colors.grey[300] : Colors.grey[600],
+        ),
+        prefixIcon: Icon(
+          icon,
+          color: isDark ? Colors.grey[300] : Colors.grey[600],
+        ),
         suffixIcon: suffixIcon,
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(12),
-          borderSide: BorderSide(color: Colors.grey[300]!),
+          borderSide: BorderSide(
+            color: isDark ? Colors.grey[600]! : Colors.grey[300]!,
+          ),
         ),
         enabledBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(12),
-          borderSide: BorderSide(color: Colors.grey[300]!),
+          borderSide: BorderSide(
+            color: isDark ? Colors.grey[600]! : Colors.grey[300]!,
+          ),
         ),
         focusedBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(12),
-          borderSide: BorderSide(color: Colors.blue),
+          borderSide: BorderSide(color: theme.primaryColor),
         ),
         errorBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(12),
-          borderSide: BorderSide(color: Colors.red),
+          borderSide: const BorderSide(color: Colors.red),
         ),
         filled: true,
-        fillColor: Colors.grey[50],
+        fillColor: isDark ? Colors.grey[800] : Colors.grey[50],
       ),
     );
   }

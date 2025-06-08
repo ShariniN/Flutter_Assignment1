@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '/widgets/product.dart';
+import '../models/product.dart';
 
 class ProductDetails {
   final List<Map<String, dynamic>> colors;

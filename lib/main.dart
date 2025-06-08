@@ -1,4 +1,4 @@
-import 'package:assignment1/screens/electronics_store.dart';
+import 'package:assignment1/screens/onboarding_screen.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -25,7 +25,7 @@ class MyApp extends StatelessWidget {
         cardColor: Colors.grey[900],
       ),
       themeMode: ThemeMode.system,
-      home: ElectronicsStore(),
+      home: OnboardingScreen(),
       debugShowCheckedModeBanner: false,
     );
   }

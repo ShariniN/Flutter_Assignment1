@@ -1,4 +1,5 @@
 import 'package:assignment1/screens/profile.dart';
+import 'package:assignment1/screens/electronics_store.dart';
 import 'package:flutter/material.dart';
 import '/screens/category_page.dart';
 import '/screens/cart_screen.dart';
@@ -61,9 +62,7 @@ class _NavigationLayoutState extends State<NavigationLayout> {
 
     switch (index) {
       case 0:
-        if (ModalRoute.of(context)?.settings.name != '/') {
-          Navigator.pushNamedAndRemoveUntil(context, '/', (route) => false);
-        }
+        _navigateToHome();
         break;
       case 1:
         _showCategoriesBottomSheet();
@@ -74,6 +73,16 @@ class _NavigationLayoutState extends State<NavigationLayout> {
       case 3:
         _navigateToProfile();
         break;
+    }
+  }
+
+  void _navigateToHome() {
+    if (ModalRoute.of(context)?.settings.name != '/electronics_store') {
+      Navigator.pushAndRemoveUntil(
+        context,
+        MaterialPageRoute(builder: (context) => ElectronicsStore()),
+        (route) => false,
+      );
     }
   }
 

@@ -1,6 +1,6 @@
 // cart_manager.dart
 import 'package:flutter/material.dart';
-import '/widgets/product.dart';
+import 'product.dart';
 
 class CartItem {
   final Product product;
