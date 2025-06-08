@@ -354,10 +354,10 @@ class _CategoryPageState extends State<CategoryPage> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Text(
-                          '\${product.price}',
+                          '\$${product.price.toStringAsFixed(2)}', // Fixed price display
                           style: Theme.of(context).textTheme.titleSmall?.copyWith(
                             fontWeight: FontWeight.bold,
-                            color: Colors.white,
+                            color: Color(0xFF5A5CE6), // Changed to primary color for better visibility
                           ),
                         ),
                         Row(
