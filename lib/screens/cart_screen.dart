@@ -142,11 +142,6 @@ class _CartPageState extends State<CartPage> {
               color: theme.brightness == Brightness.dark ? Colors.grey[800] : Colors.grey[100],
               borderRadius: BorderRadius.circular(8),
             ),
-            child: Icon(
-              item.product.icon,
-              size: 40,
-              color: theme.brightness == Brightness.dark ? Colors.white70 : Colors.black54,
-            ),
           ),
           const SizedBox(width: 16),
           

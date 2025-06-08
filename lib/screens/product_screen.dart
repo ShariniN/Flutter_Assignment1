@@ -138,14 +138,6 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                           child: Image.asset(
                             widget.product.imageUrl,
                             fit: BoxFit.contain,
-                            errorBuilder: (context, error, stackTrace) {
-                              // Fallback to icon if image fails to load
-                              return Icon(
-                                widget.product.categoryIcon,
-                                size: 200,
-                                color: colorScheme.onSurface.withOpacity(0.6),
-                              );
-                            },
                           ),
                         )
                       : Icon(
@@ -405,7 +397,6 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
       ),
     );
 
-    // Specifications section
     items.add(
       Padding(
         padding: const EdgeInsets.fromLTRB(20, 30, 20, 0),
