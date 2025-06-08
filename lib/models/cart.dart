@@ -1,4 +1,3 @@
-// cart_manager.dart
 import 'package:flutter/material.dart';
 import 'product.dart';
 
@@ -39,17 +38,14 @@ class CartManager extends ChangeNotifier {
     required String selectedVariant,
     required double price,
   }) {
-    // Check if item already exists with same configuration
     final existingIndex = _items.indexWhere((item) =>
         item.product.id == product.id &&
         item.selectedColor == selectedColor &&
         item.selectedVariant == selectedVariant);
 
     if (existingIndex != -1) {
-      // Item exists, increase quantity
       _items[existingIndex].quantity++;
     } else {
-      // Add new item
       _items.add(CartItem(
         product: product,
         selectedColor: selectedColor,

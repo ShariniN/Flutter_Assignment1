@@ -14,13 +14,13 @@ class MyApp extends StatelessWidget {
       title: 'Electronics Store',
       theme: ThemeData(
         brightness: Brightness.light,
-        primarySwatch: Colors.blue,
+        primaryColor: Colors.blue,
         scaffoldBackgroundColor: Colors.white,
         cardColor: Colors.grey[100],
       ),
       darkTheme: ThemeData(
         brightness: Brightness.dark,
-        primarySwatch: Colors.blue,
+        primaryColor: Colors.blue,
         scaffoldBackgroundColor: Colors.black,
         cardColor: Colors.grey[900],
       ),
