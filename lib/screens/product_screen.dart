@@ -99,7 +99,7 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                 ),
                 const SizedBox(width: 8),
                 Text(
-                  'Add to Cart - \$${variantOptions[selectedStorageIndex]['price']}',
+                  'Add to Cart - LKR ${_formatPrice(variantOptions[selectedStorageIndex]['price'])}',
                   style: TextStyle(
                     color: colorScheme.surface,
                     fontSize: 16,
@@ -115,66 +115,119 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
     );
   }
 
+  String _formatPrice(dynamic price) {
+    String priceStr = price.toString().replaceAll('LKR ', '').replaceAll(',', '');
+    return priceStr.replaceAllMapped(
+      RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))'),
+      (Match m) => '${m[1]},',
+    );
+  }
+
   List<Widget> _buildContentItems(ThemeData theme) {
     final colorScheme = theme.colorScheme;
     List<Widget> items = [];
 
-    // Product image section
     items.add(
       Container(
         height: 400,
         width: double.infinity,
-        color: theme.cardColor,
-        child: Column(
-          children: [
-            Expanded(
-              child: Center(
-                child: SizedBox(
-                  height: 350,
-                  width: 250,
+        margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(20),
+          gradient: LinearGradient(
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
+            colors: [
+              colorScheme.primary.withOpacity(0.8),
+              colorScheme.secondary.withOpacity(0.6),
+              colorScheme.tertiary.withOpacity(0.4),
+            ],
+          ),
+          boxShadow: [
+            BoxShadow(
+              color: colorScheme.primary.withOpacity(0.3),
+              blurRadius: 15,
+              offset: const Offset(0, 8),
+            ),
+          ],
+        ),
+        child: Container(
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+              begin: Alignment.topCenter,
+              end: Alignment.bottomCenter,
+              colors: [
+                Colors.white.withOpacity(0.1),
+                Colors.transparent,
+                colorScheme.primary.withOpacity(0.05),
+              ],
+            ),
+            borderRadius: BorderRadius.circular(20),
+          ),
+          child: Column(
+            children: [
+              Expanded(
+                child: Padding(
+                  padding: const EdgeInsets.all(20),
                   child: widget.product.hasValidImage
                       ? ClipRRect(
                           borderRadius: BorderRadius.circular(12),
                           child: Image.asset(
                             widget.product.imageUrl,
-                            fit: BoxFit.contain,
+                            fit: BoxFit.cover,
+                            width: double.infinity,
+                            height: double.infinity,
                           ),
                         )
                       : Icon(
                           widget.product.categoryIcon,
                           size: 200,
-                          color: colorScheme.onSurface.withOpacity(0.6),
+                          color: colorScheme.onSurface,
                         ),
                 ),
               ),
-            ),
-            // Image indicators
-            Padding(
-              padding: const EdgeInsets.only(bottom: 20),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: List.generate(3, (index) => Container(
-                  margin: const EdgeInsets.symmetric(horizontal: 3),
-                  width: 8,
-                  height: 8,
-                  decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                    color: index == 0 
-                      ? colorScheme.onSurface
-                      : colorScheme.outline,
-                  ),
-                )),
+              Padding(
+                padding: const EdgeInsets.only(bottom: 20),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: List.generate(3, (index) => Container(
+                    margin: const EdgeInsets.symmetric(horizontal: 3),
+                    width: 8,
+                    height: 8,
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      color: index == 0 
+                        ? colorScheme.onSurface
+                        : colorScheme.outline,
+                    ),
+                  )),
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );
 
-    // Product info section
     items.add(
-      Padding(
-        padding: const EdgeInsets.fromLTRB(20, 20, 20, 0),
+      Container(
+        margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+        padding: const EdgeInsets.all(20),
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(16),
+          gradient: LinearGradient(
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
+            colors: [
+              colorScheme.primaryContainer.withOpacity(0.3),
+              colorScheme.secondaryContainer.withOpacity(0.2),
+            ],
+          ),
+          border: Border.all(
+            color: colorScheme.primary.withOpacity(0.2),
+            width: 1,
+          ),
+        ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -194,31 +247,51 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                 color: colorScheme.onSurfaceVariant,
               ),
             ),
-            const SizedBox(height: 8),
+            const SizedBox(height: 12),
             Row(
               children: [
-                Text(
-                  '\$${variantOptions[selectedStorageIndex]['price']}',
-                  style: TextStyle(
-                    fontSize: 24,
-                    fontWeight: FontWeight.w600,
-                    color: colorScheme.onSurface,
+                Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                  decoration: BoxDecoration(
+                    gradient: LinearGradient(
+                      colors: [
+                        colorScheme.primary,
+                        colorScheme.secondary,
+                      ],
+                    ),
+                    borderRadius: BorderRadius.circular(20),
+                  ),
+                  child: Text(
+                    'LKR ${_formatPrice(variantOptions[selectedStorageIndex]['price'])}',
+                    style: TextStyle(
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.white,
+                    ),
                   ),
                 ),
                 const SizedBox(width: 12),
-                Row(
-                  children: [
-                    const Icon(Icons.star, color: Colors.amber, size: 20),
-                    const SizedBox(width: 4),
-                    Text(
-                      '${widget.product.rating}',
-                      style: TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.w500,
-                        color: colorScheme.onSurfaceVariant,
+                Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                  decoration: BoxDecoration(
+                    color: Colors.amber.withOpacity(0.2),
+                    borderRadius: BorderRadius.circular(12),
+                    border: Border.all(color: Colors.amber.withOpacity(0.5)),
+                  ),
+                  child: Row(
+                    children: [
+                      const Icon(Icons.star, color: Colors.amber, size: 18),
+                      const SizedBox(width: 4),
+                      Text(
+                        '${widget.product.rating}',
+                        style: TextStyle(
+                          fontSize: 14,
+                          fontWeight: FontWeight.w600,
+                          color: Colors.orange.shade800,
+                        ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
               ],
             ),
@@ -227,7 +300,6 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
       ),
     );
 
-    // Color selection section
     if (colors.length > 1 && colors.first['name'] != 'Default') {
       items.add(
         Padding(
@@ -293,7 +365,6 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
       );
     }
 
-    // Variant selection section
     if (variantOptions.length > 1) {
       String variantLabel = _getVariantLabel();
       items.add(
@@ -353,7 +424,6 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
       );
     }
 
-    // Features section
     for (var feature in productFeatures) {
       items.add(
         Padding(
@@ -368,7 +438,6 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
       );
     }
 
-    // Details section
     items.add(
       Padding(
         padding: const EdgeInsets.fromLTRB(20, 30, 20, 0),
@@ -550,36 +619,13 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
               ),
               const SizedBox(height: 8),
               Text(
-                'Price: \$${variantOptions[selectedStorageIndex]['price']}',
+                'Price: LKR ${_formatPrice(variantOptions[selectedStorageIndex]['price'])}',
                 style: TextStyle(
                   fontWeight: FontWeight.w600,
                   color: colorScheme.onSurface,
                 ),
               ),
               const SizedBox(height: 8),
-              Container(
-                padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-                decoration: BoxDecoration(
-                  color: Colors.green,
-                  borderRadius: BorderRadius.circular(20),
-                  border: Border.all(color: Colors.green),
-                ),
-                child: Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    const Icon(Icons.check_circle, color: Colors.green, size: 16),
-                    const SizedBox(width: 4),
-                    Text(
-                      'Item added successfully',
-                      style: TextStyle(
-                        color: Colors.green,
-                        fontSize: 12,
-                        fontWeight: FontWeight.w500,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
             ],
           ),
           actions: [

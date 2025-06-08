@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import '/widgets/product_card.dart';
 import '/widgets/navbar.dart';
 import '/widgets/product.dart';
 import '/data/product_data.dart';

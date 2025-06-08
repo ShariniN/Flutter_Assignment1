@@ -24,7 +24,7 @@ class ProductData {
         id: 'phone_1',
         title: 'Apple iPhone 14 Pro',
         subtitle: '512GB Gold',
-        price: 1437,
+        price: 429000, // ~$1437 * 300 LKR
         brand: 'Apple',
         imageUrl: 'images/Apple i phone 14 Pro 128GB Space Black--1693477546.jpg',
         color: Colors.grey[100],
@@ -35,7 +35,7 @@ class ProductData {
         id: 'phone_2',
         title: 'Apple iPhone 11',
         subtitle: '128GB White',
-        price: 510,
+        price: 153000, // ~$510 * 300 LKR
         brand: 'Apple',
         imageUrl: 'images/apple-iphone-15-128gb-latest-price-in-sri-lanka-3.jpg',
         color: Colors.grey[200],
@@ -46,7 +46,7 @@ class ProductData {
         id: 'phone_3',
         title: 'Samsung Galaxy S23',
         subtitle: '256GB Black',
-        price: 899,
+        price: 269700, // ~$899 * 300 LKR
         brand: 'Samsung',
         imageUrl: 'images/Galaxy S25.png',
         color: Colors.grey[100],
@@ -57,7 +57,7 @@ class ProductData {
         id: 'phone_4',
         title: 'Google Pixel 7',
         subtitle: '128GB Blue',
-        price: 599,
+        price: 179700, // ~$599 * 300 LKR
         brand: 'Google',
         imageUrl: 'images/google pixel 5.jpg',
         color: Colors.grey[200],
@@ -68,7 +68,7 @@ class ProductData {
         id: 'phone_5',
         title: 'Xiaomi Mi 13',
         subtitle: '256GB Green',
-        price: 699,
+        price: 209700, // ~$699 * 300 LKR
         brand: 'Xiaomi',
         imageUrl: 'images/xiaomi 14.jpg',
         color: Colors.grey[100],
@@ -81,7 +81,7 @@ class ProductData {
         id: 'laptop_1',
         title: 'MacBook Pro 14"',
         subtitle: 'M2 Pro, 512GB',
-        price: 2499,
+        price: 749700, // ~$2499 * 300 LKR
         brand: 'Apple',
         imageUrl: 'images/macbook air m3.jpg',
         color: Colors.grey[100],
@@ -92,7 +92,7 @@ class ProductData {
         id: 'laptop_2',
         title: 'Dell XPS 13',
         subtitle: 'Intel i7, 16GB RAM',
-        price: 1299,
+        price: 389700, // ~$1299 * 300 LKR
         brand: 'Dell',
         imageUrl: 'images/dell xps 15.jpg',
         color: Colors.grey[200],
@@ -103,7 +103,7 @@ class ProductData {
         id: 'laptop_3',
         title: 'HP Spectre x360',
         subtitle: '13.3", 512GB SSD',
-        price: 1199,
+        price: 359700, // ~$1199 * 300 LKR
         brand: 'HP',
         imageUrl: 'images/hp-spectre.jpg',
         color: Colors.grey[100],
@@ -114,7 +114,7 @@ class ProductData {
         id: 'laptop_4',
         title: 'Lenovo ThinkPad X1',
         subtitle: 'Carbon Gen 10',
-        price: 1899,
+        price: 569700, // ~$1899 * 300 LKR
         brand: 'Lenovo',
         imageUrl: 'images/lenovo-thinkpad.jpg',
         color: Colors.grey[200],
@@ -127,7 +127,7 @@ class ProductData {
         id: 'audio_1',
         title: 'AirPods Pro 2',
         subtitle: 'USB-C, Noise Cancelling',
-        price: 249,
+        price: 74700, // ~$249 * 300 LKR
         brand: 'Apple',
         imageUrl: 'images/Apple-AirPods-Pro-2.png',
         color: Colors.grey[100],
@@ -138,7 +138,7 @@ class ProductData {
         id: 'audio_2',
         title: 'Sony WH-1000XM4',
         subtitle: 'Wireless Noise Cancelling',
-        price: 349,
+        price: 104700, // ~$349 * 300 LKR
         brand: 'Sony',
         imageUrl: 'images/SONY-WH-1000XM5-1.jpg',
         color: Colors.grey[200],
@@ -149,7 +149,7 @@ class ProductData {
         id: 'audio_3',
         title: 'Bose QuietComfort',
         subtitle: 'Bluetooth Headphones',
-        price: 329,
+        price: 98700, // ~$329 * 300 LKR
         brand: 'Bose',
         imageUrl: 'images/Bose-QuietComfort-Ultra-Headphones-4.jpg',
         color: Colors.grey[100],
@@ -160,7 +160,7 @@ class ProductData {
         id: 'audio_4',
         title: 'JBL Flip 6',
         subtitle: 'Portable Speaker',
-        price: 129,
+        price: 38700, // ~$129 * 300 LKR
         brand: 'JBL',
         imageUrl: 'images/jbl-flip-6.jpeg',
         color: Colors.grey[200],
@@ -173,7 +173,7 @@ class ProductData {
         id: 'wearable_1',
         title: 'Apple Watch Series 9',
         subtitle: '45mm GPS + Cellular',
-        price: 529,
+        price: 158700, // ~$529 * 300 LKR
         brand: 'Apple',
         imageUrl: 'images/Apple-Watch-Ultra-2-49mm-Titanium-GPS-Cellular-1.jpg',
         color: Colors.grey[100],
@@ -184,7 +184,7 @@ class ProductData {
         id: 'wearable_2',
         title: 'Samsung Galaxy Watch 6',
         subtitle: '44mm Bluetooth',
-        price: 329,
+        price: 98700, // ~$329 * 300 LKR
         brand: 'Samsung',
         imageUrl: 'images/watch 6.jpg',
         color: Colors.grey[200],
@@ -195,7 +195,7 @@ class ProductData {
         id: 'wearable_3',
         title: 'Fitbit Versa 4',
         subtitle: 'Health & Fitness',
-        price: 199,
+        price: 59700, // ~$199 * 300 LKR
         brand: 'Fitbit',
         imageUrl: 'images/fitbit sense 2.jpg',
         color: Colors.grey[100],
@@ -206,7 +206,7 @@ class ProductData {
         id: 'wearable_4',
         title: 'Garmin Venu 3',
         subtitle: 'GPS Smartwatch',
-        price: 449,
+        price: 134700, // ~$449 * 300 LKR
         brand: 'Garmin',
         imageUrl: 'images/venu 3.jpg',
         color: Colors.grey[200],
@@ -219,7 +219,7 @@ class ProductData {
         id: 'accessory_1',
         title: 'USB-C to Lightning Cable',
         subtitle: '2m Braided',
-        price: 29,
+        price: 8700, // ~$29 * 300 LKR
         brand: 'Apple',
         imageUrl: 'images/usb c charger.jpg',
         color: Colors.grey[100],
@@ -230,7 +230,7 @@ class ProductData {
         id: 'accessory_2',
         title: 'Wireless Charging Pad',
         subtitle: '15W Fast Charging',
-        price: 49,
+        price: 14700, // ~$49 * 300 LKR
         brand: 'Belkin',
         imageUrl: 'images/wireless-charging.jpg',
         color: Colors.grey[200],
@@ -241,7 +241,7 @@ class ProductData {
         id: 'accessory_3',
         title: 'Phone Case Clear',
         subtitle: 'Drop Protection',
-        price: 19,
+        price: 5700, // ~$19 * 300 LKR
         brand: 'OtterBox',
         imageUrl: 'images/clear-phonecase.jpg',
         color: Colors.grey[100],
@@ -252,7 +252,7 @@ class ProductData {
         id: 'accessory_4',
         title: 'Portable Power Bank',
         subtitle: '10000mAh USB-C',
-        price: 39,
+        price: 11700, // ~$39 * 300 LKR
         brand: 'Anker',
         imageUrl: 'images/powerbank.jpg',
         color: Colors.grey[200],
@@ -272,9 +272,9 @@ class ProductData {
       ],
       variantOptions: [
         {'size': '128GB', 'priceOffset': 0},
-        {'size': '256GB', 'priceOffset': 100},
-        {'size': '512GB', 'priceOffset': 300},
-        {'size': '1TB', 'priceOffset': 500},
+        {'size': '256GB', 'priceOffset': 30000}, // ~$100 * 300 LKR
+        {'size': '512GB', 'priceOffset': 90000}, // ~$300 * 300 LKR
+        {'size': '1TB', 'priceOffset': 150000}, // ~$500 * 300 LKR
       ],
       features: [
         {'icon': Icons.smartphone, 'title': 'Display', 'description': '6.1-inch Super Retina XDR'},
@@ -298,9 +298,9 @@ class ProductData {
       ],
       variantOptions: [
         {'size': '128GB', 'priceOffset': 0},
-        {'size': '256GB', 'priceOffset': 100},
-        {'size': '512GB', 'priceOffset': 300},
-        {'size': '1TB', 'priceOffset': 500},
+        {'size': '256GB', 'priceOffset': 30000}, // ~$100 * 300 LKR
+        {'size': '512GB', 'priceOffset': 90000}, // ~$300 * 300 LKR
+        {'size': '1TB', 'priceOffset': 150000}, // ~$500 * 300 LKR
       ],
       features: [
         {'icon': Icons.computer, 'title': 'Display', 'description': '13.3-inch Retina Display'},
@@ -324,7 +324,7 @@ class ProductData {
       ],
       variantOptions: [
         {'size': 'Standard', 'priceOffset': 0},
-        {'size': 'Premium', 'priceOffset': 50},
+        {'size': 'Premium', 'priceOffset': 15000}, // ~$50 * 300 LKR
       ],
       features: [
         {'icon': Icons.headphones, 'title': 'Audio', 'description': 'High-fidelity sound'},
@@ -348,7 +348,7 @@ class ProductData {
       ],
       variantOptions: [
         {'size': 'Small', 'priceOffset': 0},
-        {'size': 'Large', 'priceOffset': 30},
+        {'size': 'Large', 'priceOffset': 9000}, // ~$30 * 300 LKR
       ],
       features: [
         {'icon': Icons.watch, 'title': 'Display', 'description': 'Always-On Retina Display'},
@@ -453,7 +453,7 @@ class ProductData {
 
   static Map<String, double> getPriceRangeByCategory(String category) {
     final products = getProductsByCategory(category);
-    if (products.isEmpty) return {'min': 0.0, 'max': 1000.0};
+    if (products.isEmpty) return {'min': 0.0, 'max': 300000.0};
     
     final prices = products.map((product) => product.price).toList();
     return {
