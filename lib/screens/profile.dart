@@ -27,14 +27,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
         backgroundColor: isDark ? Colors.grey[900] : Colors.white,
         elevation: 0,
         iconTheme: IconThemeData(color: isDark ? Colors.white : Colors.black87),
-        actions: [
-          IconButton(
-            icon: Icon(Icons.edit_outlined),
-            onPressed: () {
-              _showEditProfileDialog();
-            },
-          ),
-        ],
       ),
       body: ListView.builder(
         itemCount: _buildSections().length,
@@ -394,23 +386,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
     );
   }
 
-  void _showEditProfileDialog() {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: Text('Edit Profile'),
-          content: Text('Profile editing functionality would be implemented here.'),
-          actions: [
-            TextButton(
-              onPressed: () => Navigator.of(context).pop(),
-              child: Text('Close'),
-            ),
-          ],
-        );
-      },
-    );
-  }
 
   void _showLogoutDialog() {
     showDialog(
