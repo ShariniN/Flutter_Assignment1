@@ -24,10 +24,6 @@ class LargeProductCard extends StatelessWidget {
         iconData = Icons.vrpano;
         iconColor = Colors.black;
         break;
-      case 'playstation 5':
-        iconData = Icons.sports_esports;
-        iconColor = Colors.black;
-        break;
       case 'macbook air':
         iconData = Icons.laptop_mac;
         iconColor = Colors.black87;

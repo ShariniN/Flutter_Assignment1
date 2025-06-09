@@ -1,3 +1,4 @@
+import 'package:assignment1/screens/checkout_screen.dart';
 import 'package:flutter/material.dart';
 import '../models/cart.dart';
 
@@ -400,11 +401,9 @@ class _CartPageState extends State<CartPage> {
   }
 
   void _proceedToCheckout() {
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text('Checkout functionality coming soon!'),
-        backgroundColor: Colors.green,
-      ),
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => CheckoutPage()),
     );
   }
 }

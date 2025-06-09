@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import '../models/cart.dart';
+import 'package:flutter/services.dart';
+import '/models/cart.dart';
 
 class CheckoutPage extends StatefulWidget {
   const CheckoutPage({Key? key}) : super(key: key);
@@ -12,13 +13,9 @@ class _CheckoutPageState extends State<CheckoutPage> {
   final CartManager _cartManager = CartManager();
   final _formKey = GlobalKey<FormState>();
   
-  // Form controllers
   final _nameController = TextEditingController();
   final _emailController = TextEditingController();
-  final _phoneController = TextEditingController();
   final _addressController = TextEditingController();
-  final _cityController = TextEditingController();
-  final _zipController = TextEditingController();
   final _cardNumberController = TextEditingController();
   final _expiryController = TextEditingController();
   final _cvvController = TextEditingController();
@@ -28,16 +25,17 @@ class _CheckoutPageState extends State<CheckoutPage> {
 
   @override
   void dispose() {
-    _nameController.dispose();
-    _emailController.dispose();
-    _phoneController.dispose();
-    _addressController.dispose();
-    _cityController.dispose();
-    _zipController.dispose();
-    _cardNumberController.dispose();
-    _expiryController.dispose();
-    _cvvController.dispose();
-    _cardHolderController.dispose();
+    for (var controller in [
+      _nameController,
+      _emailController,
+      _addressController,
+      _cardNumberController,
+      _expiryController,
+      _cvvController,
+      _cardHolderController,
+    ]) {
+      controller.dispose();
+    }
     super.dispose();
   }
 
@@ -66,23 +64,14 @@ class _CheckoutPageState extends State<CheckoutPage> {
       ),
       body: Form(
         key: _formKey,
-        child: ListView.builder(
+        child: ListView(
           padding: const EdgeInsets.all(16),
-          itemCount: 4, // Order Summary, Payment Method, Delivery Details, Place Order Button
-          itemBuilder: (context, index) {
-            switch (index) {
-              case 0:
-                return _buildOrderSummary(theme);
-              case 1:
-                return _buildPaymentMethod(theme);
-              case 2:
-                return _buildDeliveryDetails(theme);
-              case 3:
-                return _buildPlaceOrderButton(theme);
-              default:
-                return const SizedBox.shrink();
-            }
-          },
+          children: [
+            _buildOrderSummary(theme),
+            _buildPaymentMethod(theme),
+            _buildDeliveryDetails(theme),
+            _buildPlaceOrderButton(theme),
+          ],
         ),
       ),
     );
@@ -110,15 +99,11 @@ class _CheckoutPageState extends State<CheckoutPage> {
           ),
           const SizedBox(height: 16),
           
-          // Cart Items
-          ListView.separated(
-            shrinkWrap: true,
-            physics: const NeverScrollableScrollPhysics(),
-            itemCount: _cartManager.items.length,
-            separatorBuilder: (context, index) => const SizedBox(height: 12),
-            itemBuilder: (context, index) {
-              final item = _cartManager.items[index];
-              return Row(
+          ...List.generate(_cartManager.items.length, (index) {
+            final item = _cartManager.items[index];
+            return Padding(
+              padding: EdgeInsets.only(bottom: index < _cartManager.items.length - 1 ? 12 : 0),
+              child: Row(
                 children: [
                   Container(
                     width: 50,
@@ -188,15 +173,14 @@ class _CheckoutPageState extends State<CheckoutPage> {
                     ),
                   ),
                 ],
-              );
-            },
-          ),
+              ),
+            );
+          }),
           
           const SizedBox(height: 16),
           const Divider(),
           const SizedBox(height: 8),
-          
-          // Total
+
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
@@ -250,9 +234,15 @@ class _CheckoutPageState extends State<CheckoutPage> {
               ),
               prefixIcon: const Icon(Icons.person),
             ),
+            inputFormatters: [
+              FilteringTextInputFormatter.allow(RegExp(r'[a-zA-Z\s]')),
+            ],
             validator: (value) {
-              if (value == null || value.isEmpty) {
+              if (value == null || value.trim().isEmpty) {
                 return 'Please enter cardholder name';
+              }
+              if (value.trim().length < 2) {
+                return 'Name must be at least 2 characters';
               }
               return null;
             },
@@ -267,13 +257,18 @@ class _CheckoutPageState extends State<CheckoutPage> {
                 borderRadius: BorderRadius.circular(8),
               ),
               prefixIcon: const Icon(Icons.credit_card),
+              hintText: '1234567890123456',
             ),
             keyboardType: TextInputType.number,
+            inputFormatters: [
+              FilteringTextInputFormatter.digitsOnly,
+              LengthLimitingTextInputFormatter(16),
+            ],
             validator: (value) {
               if (value == null || value.isEmpty) {
                 return 'Please enter card number';
               }
-              if (value.length < 16) {
+              if (value.length != 16) {
                 return 'Card number must be 16 digits';
               }
               return null;
@@ -284,7 +279,7 @@ class _CheckoutPageState extends State<CheckoutPage> {
           Row(
             children: [
               Expanded(
-                child: TextFormField(
+                child:                   TextFormField(
                   controller: _expiryController,
                   decoration: InputDecoration(
                     labelText: 'MM/YY',
@@ -292,15 +287,38 @@ class _CheckoutPageState extends State<CheckoutPage> {
                       borderRadius: BorderRadius.circular(8),
                     ),
                     prefixIcon: const Icon(Icons.calendar_today),
+                    hintText: '12/25',
                   ),
                   keyboardType: TextInputType.number,
+                  inputFormatters: [
+                    FilteringTextInputFormatter.digitsOnly,
+                    LengthLimitingTextInputFormatter(4),
+                    _ExpiryDateFormatter(),
+                  ],
                   validator: (value) {
                     if (value == null || value.isEmpty) {
-                      return 'Please enter expiry date';
+                      return 'Required';
                     }
-                    if (!RegExp(r'^\d{2}/\d{2}$').hasMatch(value)) {
+                    if (value.length != 5 || !value.contains('/')) {
                       return 'Format: MM/YY';
                     }
+                    
+                    final parts = value.split('/');
+                    if (parts.length != 2) {
+                      return 'Format: MM/YY';
+                    }
+                    
+                    final month = int.tryParse(parts[0]);
+                    final year = int.tryParse(parts[1]);
+                    
+                    if (month == null || month < 1 || month > 12) {
+                      return 'Invalid month';
+                    }
+                    
+                    if (year == null) {
+                      return 'Invalid year';
+                    }
+                    
                     return null;
                   },
                 ),
@@ -315,14 +333,19 @@ class _CheckoutPageState extends State<CheckoutPage> {
                       borderRadius: BorderRadius.circular(8),
                     ),
                     prefixIcon: const Icon(Icons.lock),
+                    hintText: '123',
                   ),
                   keyboardType: TextInputType.number,
+                  inputFormatters: [
+                    FilteringTextInputFormatter.digitsOnly,
+                    LengthLimitingTextInputFormatter(3),
+                  ],
                   validator: (value) {
                     if (value == null || value.isEmpty) {
-                      return 'Please enter CVV';
+                      return 'Required';
                     }
                     if (value.length != 3) {
-                      return 'CVV must be 3 digits';
+                      return 'Must be 3 digits';
                     }
                     return null;
                   },
@@ -366,9 +389,15 @@ class _CheckoutPageState extends State<CheckoutPage> {
               ),
               prefixIcon: const Icon(Icons.person),
             ),
+            inputFormatters: [
+              FilteringTextInputFormatter.allow(RegExp(r'[a-zA-Z\s]')),
+            ],
             validator: (value) {
-              if (value == null || value.isEmpty) {
+              if (value == null || value.trim().isEmpty) {
                 return 'Please enter your full name';
+              }
+              if (value.trim().length < 2) {
+                return 'Name must be at least 2 characters';
               }
               return null;
             },
@@ -386,30 +415,11 @@ class _CheckoutPageState extends State<CheckoutPage> {
             ),
             keyboardType: TextInputType.emailAddress,
             validator: (value) {
-              if (value == null || value.isEmpty) {
+              if (value == null || value.trim().isEmpty) {
                 return 'Please enter your email';
               }
-              if (!RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$').hasMatch(value)) {
+              if (!RegExp(r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$').hasMatch(value.trim())) {
                 return 'Please enter a valid email';
-              }
-              return null;
-            },
-          ),
-          const SizedBox(height: 16),
-          
-          TextFormField(
-            controller: _phoneController,
-            decoration: InputDecoration(
-              labelText: 'Phone Number',
-              border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(8),
-              ),
-              prefixIcon: const Icon(Icons.phone),
-            ),
-            keyboardType: TextInputType.phone,
-            validator: (value) {
-              if (value == null || value.isEmpty) {
-                return 'Please enter your phone number';
               }
               return null;
             },
@@ -419,7 +429,7 @@ class _CheckoutPageState extends State<CheckoutPage> {
           TextFormField(
             controller: _addressController,
             decoration: InputDecoration(
-              labelText: 'Address',
+              labelText: 'Delivery Address',
               border: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(8),
               ),
@@ -427,55 +437,14 @@ class _CheckoutPageState extends State<CheckoutPage> {
             ),
             maxLines: 2,
             validator: (value) {
-              if (value == null || value.isEmpty) {
-                return 'Please enter your address';
+              if (value == null || value.trim().isEmpty) {
+                return 'Please enter your delivery address';
+              }
+              if (value.trim().length < 10) {
+                return 'Please enter a complete address';
               }
               return null;
             },
-          ),
-          const SizedBox(height: 16),
-          
-          Row(
-            children: [
-              Expanded(
-                child: TextFormField(
-                  controller: _cityController,
-                  decoration: InputDecoration(
-                    labelText: 'City',
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(8),
-                    ),
-                    prefixIcon: const Icon(Icons.location_city),
-                  ),
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'Please enter city';
-                    }
-                    return null;
-                  },
-                ),
-              ),
-              const SizedBox(width: 16),
-              Expanded(
-                child: TextFormField(
-                  controller: _zipController,
-                  decoration: InputDecoration(
-                    labelText: 'ZIP Code',
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(8),
-                    ),
-                    prefixIcon: const Icon(Icons.markunread_mailbox),
-                  ),
-                  keyboardType: TextInputType.number,
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'Please enter ZIP code';
-                    }
-                    return null;
-                  },
-                ),
-              ),
-            ],
           ),
         ],
       ),
@@ -539,17 +508,14 @@ class _CheckoutPageState extends State<CheckoutPage> {
         _isProcessing = true;
       });
 
-      // Simulate order processing
       await Future.delayed(const Duration(seconds: 2));
 
       setState(() {
         _isProcessing = false;
       });
 
-      // Clear cart after successful order
       _cartManager.clearCart();
 
-      // Show success dialog
       _showSuccessDialog();
     }
   }
@@ -572,7 +538,7 @@ class _CheckoutPageState extends State<CheckoutPage> {
               Container(
                 width: 80,
                 height: 80,
-                decoration: BoxDecoration(
+                decoration: const BoxDecoration(
                   color: Colors.green,
                   shape: BoxShape.circle,
                 ),
@@ -603,8 +569,8 @@ class _CheckoutPageState extends State<CheckoutPage> {
                 width: double.infinity,
                 child: ElevatedButton(
                   onPressed: () {
-                    Navigator.of(context).pop(); // Close dialog
-                    Navigator.of(context).pop(); // Go back to previous screen
+                    Navigator.of(context).pop(); 
+                    Navigator.of(context).pop();
                   },
                   style: ElevatedButton.styleFrom(
                     backgroundColor: theme.brightness == Brightness.dark ? Colors.white : Colors.black,
@@ -627,5 +593,29 @@ class _CheckoutPageState extends State<CheckoutPage> {
         );
       },
     );
+  }
+
+}
+
+class _ExpiryDateFormatter extends TextInputFormatter {
+  @override
+  TextEditingValue formatEditUpdate(
+    TextEditingValue oldValue,
+    TextEditingValue newValue,
+  ) {
+    final text = newValue.text.replaceAll('/', '');
+    
+    if (text.length >= 2) {
+      final month = text.substring(0, 2);
+      final year = text.length > 2 ? text.substring(2) : '';
+      final formattedText = year.isEmpty ? '$month/' : '$month/$year';
+      
+      return TextEditingValue(
+        text: formattedText,
+        selection: TextSelection.collapsed(offset: formattedText.length),
+      );
+    }
+    
+    return newValue;
   }
 }
