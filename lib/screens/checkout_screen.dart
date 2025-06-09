@@ -167,7 +167,7 @@ class _CheckoutPageState extends State<CheckoutPage> {
                   ),
                   const SizedBox(width: 8),
                   Text(
-                    '\$${(item.price * item.quantity).toStringAsFixed(2)}',
+                    'LKR ${(item.price * item.quantity).toStringAsFixed(2)}',
                     style: theme.textTheme.bodyMedium?.copyWith(
                       fontWeight: FontWeight.w600,
                     ),
@@ -191,7 +191,7 @@ class _CheckoutPageState extends State<CheckoutPage> {
                 ),
               ),
               Text(
-                '\$${_cartManager.totalAmount.toStringAsFixed(2)}',
+                'LKR ${_cartManager.totalAmount.toStringAsFixed(2)}',
                 style: theme.textTheme.titleMedium?.copyWith(
                   fontWeight: FontWeight.w700,
                 ),
@@ -487,7 +487,7 @@ class _CheckoutPageState extends State<CheckoutPage> {
                   ],
                 )
               : Text(
-                  'Place Order • \$${_cartManager.totalAmount.toStringAsFixed(2)}',
+                  'Place Order • LKR ${_cartManager.totalAmount.toStringAsFixed(2)}',
                   style: TextStyle(
                     fontSize: 16,
                     fontWeight: FontWeight.w600,

@@ -36,7 +36,6 @@ class ProductData {
         final imageProvider = AssetImage(imageUrl);
         imageCache[imageUrl] = imageProvider;
       } catch (e) {
-        print('Error loading image $imageUrl: $e');
         imageCache[imageUrl] = const AssetImage('images/placeholder.png');
       }
     }

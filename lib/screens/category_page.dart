@@ -193,7 +193,7 @@ class _CategoryPageState extends State<CategoryPage> {
                   borderRadius: BorderRadius.circular(8),
                 ),
                 child: Text(
-                  '\$${_priceRange.start.round()}',
+                  'LKR ${_priceRange.start.round()}',
                   style: Theme.of(context).textTheme.bodyMedium,
                 ),
               ),
@@ -207,7 +207,7 @@ class _CategoryPageState extends State<CategoryPage> {
                   borderRadius: BorderRadius.circular(8),
                 ),
                 child: Text(
-                  '\$${_priceRange.end.round()}',
+                  'LKR ${_priceRange.end.round()}',
                   style: Theme.of(context).textTheme.bodyMedium,
                 ),
               ),
@@ -281,126 +281,155 @@ class _CategoryPageState extends State<CategoryPage> {
     );
   }
 
-  Widget _buildProductCard(Product product) {
-    return Container(
-      decoration: BoxDecoration(
-        gradient: LinearGradient(
-          colors: [Color(0xFF5A5CE6), Color(0xFF7C83FD)],
-          begin: Alignment.topLeft,
-          end: Alignment.bottomRight,
-        ),
-        borderRadius: BorderRadius.circular(14),
-        boxShadow: [
-          BoxShadow(
-            color: Color(0xFF5A5CE6),
-            blurRadius: 10,
-            offset: Offset(0, 4),
-          ),
-        ],
+Widget _buildProductCard(Product product) {
+  return Container(
+    decoration: BoxDecoration(
+      gradient: LinearGradient(
+        colors: [Color(0xFF5A5CE6), Color(0xFF7C83FD)],
+        begin: Alignment.topLeft,
+        end: Alignment.bottomRight,
       ),
-      child: Container(
-        margin: EdgeInsets.all(2),
-        decoration: BoxDecoration(
-          color: Theme.of(context).cardColor,
-          borderRadius: BorderRadius.circular(12),
+      borderRadius: BorderRadius.circular(14),
+      boxShadow: [
+        BoxShadow(
+          color: Color(0xFF5A5CE6),
+          blurRadius: 10,
+          offset: Offset(0, 4),
         ),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Expanded(
-              flex: 3,
-              child: Container(
-                width: double.infinity,
-                padding: EdgeInsets.all(12),
-                decoration: BoxDecoration(
-                  color: Colors.grey.shade50,
-                  borderRadius: BorderRadius.vertical(top: Radius.circular(12)),
-                ),
-                child: product.hasValidImage
-                    ? Container(
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(8),
-                        ),
-                        child: Image.asset(
-                          product.imageUrl,
-                          fit: BoxFit.contain,
-                        ),
-                      )
-                    : Container(
-                        decoration: BoxDecoration(
-                          color: Colors.grey.shade200,
-                          borderRadius: BorderRadius.circular(8),
-                        ),
+      ],
+    ),
+    child: Container(
+      margin: EdgeInsets.all(2),
+      decoration: BoxDecoration(
+        color: Theme.of(context).cardColor,
+        borderRadius: BorderRadius.circular(12),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Flexible(
+            flex: 3,
+            child: Container(
+              width: double.infinity,
+              constraints: BoxConstraints(
+                minHeight: 80,
+              ),
+              padding: EdgeInsets.all(8),
+              decoration: BoxDecoration(
+                color: Colors.grey.shade50,
+                borderRadius: BorderRadius.vertical(top: Radius.circular(12)),
+              ),
+              child: product.hasValidImage
+                  ? Container(
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                      child: Image.asset(
+                        product.imageUrl,
+                        fit: BoxFit.contain,
+                      ),
+                    )
+                  : Container(
+                      decoration: BoxDecoration(
+                        color: Colors.grey.shade200,
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                      child: Center(
                         child: Icon(
                           Icons.image,
-                          size: 40,
+                          size: 32,
                           color: Colors.grey.shade400,
                         ),
                       ),
-              ),
+                    ),
             ),
-            Expanded(
-              flex: 2,
-              child: Padding(
-                padding: EdgeInsets.all(12),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisSize: MainAxisSize.min,
+          ),
+          
+          Container(
+            width: double.infinity,
+            padding: EdgeInsets.all(8),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Text(
+                  product.title,
+                  style: Theme.of(context).textTheme.titleSmall?.copyWith(
+                    fontWeight: FontWeight.w600,
+                    fontSize: 13,
+                  ),
+                  maxLines: 2,
+                  overflow: TextOverflow.ellipsis,
+                ),
+                
+                SizedBox(height: 2),
+                
+                Text(
+                  product.subtitle,
+                  style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                    color: Colors.grey[600],
+                    fontSize: 11,
+                  ),
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                ),
+                
+                SizedBox(height: 6),
+                
+                Row(
                   children: [
-                    Text(
-                      product.title,
-                      style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                        fontWeight: FontWeight.w600,
-                      ),
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
-                    ),
-                    SizedBox(height: 2),
-                    Text(
-                      product.subtitle,
-                      style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                        color: Colors.grey[600],
-                      ),
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
-                    ),
-                    SizedBox(height: 8),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(
-                          '\$${product.price.toStringAsFixed(2)}',
+                    Flexible(
+                      flex: 2,
+                      child: FittedBox(
+                        fit: BoxFit.scaleDown,
+                        alignment: Alignment.centerLeft,
+                        child: Text(
+                          'LKR ${product.price.toStringAsFixed(2)}',
                           style: Theme.of(context).textTheme.titleSmall?.copyWith(
                             fontWeight: FontWeight.bold,
                             color: Color(0xFF5A5CE6),
+                            fontSize: 13,
                           ),
                         ),
-                        Row(
+                      ),
+                    ),
+                    
+                    SizedBox(width: 4),
+                    
+                    Flexible(
+                      flex: 1,
+                      child: FittedBox(
+                        fit: BoxFit.scaleDown,
+                        child: Row(
                           mainAxisSize: MainAxisSize.min,
                           children: [
                             Icon(
                               Icons.star,
-                              size: 14,
+                              size: 12,
                               color: Colors.amber,
                             ),
                             SizedBox(width: 2),
                             Text(
                               '${product.rating}',
-                              style: Theme.of(context).textTheme.bodySmall,
+                              style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                                fontSize: 11,
+                              ),
                             ),
                           ],
                         ),
-                      ],
+                      ),
                     ),
                   ],
                 ),
-              ),
+              ],
             ),
-          ],
-        ),
+          ),
+        ],
       ),
-    );
-  }
+    ),
+  );
+}
 
   @override
   Widget build(BuildContext context) {
@@ -517,6 +546,7 @@ class _CategoryPageState extends State<CategoryPage> {
                       builder: (context, constraints) {
                         final crossAxisCount = isLandscape ? 3 : 2;
                         final itemWidth = (constraints.maxWidth - (crossAxisCount - 1) * 12) / crossAxisCount;
+
                         
                         return GridView.builder(
                           gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(

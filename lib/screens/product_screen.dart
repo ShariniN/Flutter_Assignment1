@@ -70,7 +70,6 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
         });
       }
     } catch (e) {
-      print('Error loading cached image: $e');
       if (mounted) {
         setState(() {
           _cachedImage = const AssetImage('images/placeholder.png');

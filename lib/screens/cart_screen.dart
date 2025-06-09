@@ -173,7 +173,7 @@ class _CartPageState extends State<CartPage> {
                 ),
                 const SizedBox(height: 8),
                 Text(
-                  '\$${item.price.toStringAsFixed(2)}',
+                  'LKR ${item.price.toStringAsFixed(2)}',
                   style: theme.textTheme.bodyLarge?.copyWith(
                     fontWeight: FontWeight.w600,
                   ),
@@ -275,7 +275,7 @@ class _CartPageState extends State<CartPage> {
                   ),
                 ),
                 Text(
-                  '\$${_cartManager.totalAmount.toStringAsFixed(2)}',
+                  'LKR ${_cartManager.totalAmount.toStringAsFixed(2)}',
                   style: theme.textTheme.titleMedium?.copyWith(
                     fontWeight: FontWeight.w600,
                   ),
