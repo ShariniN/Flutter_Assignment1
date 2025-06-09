@@ -1,6 +1,6 @@
 import 'package:assignment1/screens/checkout_screen.dart';
 import 'package:flutter/material.dart';
-import '../models/cart.dart';
+import '/models/cart.dart';
 
 class CartPage extends StatefulWidget {
   const CartPage({Key? key}) : super(key: key);
@@ -48,29 +48,22 @@ class _CartPageState extends State<CartPage> {
             ),
         ],
       ),
-      body: AnimatedBuilder(
-        animation: _cartManager,
-        builder: (context, child) {
-          if (_cartManager.items.isEmpty) {
-            return _buildEmptyCart(theme);
-          }
-
-          return Column(
-            children: [
-              Expanded(
-                child: ListView.builder(
-                  padding: const EdgeInsets.all(16),
-                  itemCount: _cartManager.items.length,
-                  itemBuilder: (context, index) {
-                    return _buildCartItem(index, theme);
-                  },
+      body: _cartManager.items.isEmpty
+          ? _buildEmptyCart(theme)
+          : Column(
+              children: [
+                Expanded(
+                  child: ListView.builder(
+                    padding: const EdgeInsets.all(16),
+                    itemCount: _cartManager.items.length,
+                    itemBuilder: (context, index) {
+                      return _buildCartItem(index, theme);
+                    },
+                  ),
                 ),
-              ),
-              _buildCartSummary(theme),
-            ],
-          );
-        },
-      ),
+                _buildCartSummary(theme),
+              ],
+            ),
     );
   }
 
@@ -142,57 +135,20 @@ class _CartPageState extends State<CartPage> {
             decoration: BoxDecoration(
               color: theme.brightness == Brightness.dark ? Colors.grey[800] : Colors.grey[100],
               borderRadius: BorderRadius.circular(8),
-            ),
-            child: ClipRRect(
-              borderRadius: BorderRadius.circular(8),
-              child: item.product.imageUrl.isNotEmpty
-                  ? Image.network(
-                      item.product.imageUrl,
-                      width: 80,
-                      height: 80,
+              image: item.product.imageUrl.isNotEmpty
+                  ? DecorationImage(
+                      image: NetworkImage(item.product.imageUrl),
                       fit: BoxFit.cover,
-                      errorBuilder: (context, error, stackTrace) {
-                        return Container(
-                          width: 80,
-                          height: 80,
-                          decoration: BoxDecoration(
-                            color: theme.brightness == Brightness.dark ? Colors.grey[800] : Colors.grey[100],
-                            borderRadius: BorderRadius.circular(8),
-                          ),
-                          child: Icon(
-                            Icons.image_not_supported,
-                            color: theme.brightness == Brightness.dark ? Colors.grey[600] : Colors.grey[400],
-                            size: 32,
-                          ),
-                        );
-                      },
-                      loadingBuilder: (context, child, loadingProgress) {
-                        if (loadingProgress == null) return child;
-                        return Container(
-                          width: 80,
-                          height: 80,
-                          decoration: BoxDecoration(
-                            color: theme.brightness == Brightness.dark ? Colors.grey[800] : Colors.grey[100],
-                            borderRadius: BorderRadius.circular(8),
-                          ),
-                          child: Center(
-                            child: CircularProgressIndicator(
-                              value: loadingProgress.expectedTotalBytes != null
-                                  ? loadingProgress.cumulativeBytesLoaded / loadingProgress.expectedTotalBytes!
-                                  : null,
-                              strokeWidth: 2,
-                              color: theme.brightness == Brightness.dark ? Colors.white : Colors.black,
-                            ),
-                          ),
-                        );
-                      },
                     )
-                  : Icon(
-                      Icons.image_not_supported,
-                      color: theme.brightness == Brightness.dark ? Colors.grey[600] : Colors.grey[400],
-                      size: 32,
-                    ),
+                  : null,
             ),
+            child: item.product.imageUrl.isEmpty
+                ? Icon(
+                    Icons.image_not_supported,
+                    color: theme.brightness == Brightness.dark ? Colors.grey[600] : Colors.grey[400],
+                    size: 32,
+                  )
+                : null,
           ),
           const SizedBox(width: 16),
           
@@ -305,7 +261,8 @@ class _CartPageState extends State<CartPage> {
           ),
         ],
       ),
-      child: SafeArea(
+      child: Padding(
+        padding: EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
         child: Column(
           children: [
             Row(
