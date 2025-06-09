@@ -428,9 +428,9 @@ class ProductData {
 
   static List<Product> getAllProducts() {
     List<Product> allProducts = [];
-    _productsByCategory.values.forEach((products) {
+    for (var products in _productsByCategory.values) {
       allProducts.addAll(products);
-    });
+    }
     return allProducts;
   }
 
