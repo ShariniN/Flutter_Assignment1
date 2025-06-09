@@ -142,6 +142,56 @@ class _CartPageState extends State<CartPage> {
               color: theme.brightness == Brightness.dark ? Colors.grey[800] : Colors.grey[100],
               borderRadius: BorderRadius.circular(8),
             ),
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(8),
+              child: item.product.imageUrl.isNotEmpty
+                  ? Image.network(
+                      item.product.imageUrl,
+                      width: 80,
+                      height: 80,
+                      fit: BoxFit.cover,
+                      errorBuilder: (context, error, stackTrace) {
+                        return Container(
+                          width: 80,
+                          height: 80,
+                          decoration: BoxDecoration(
+                            color: theme.brightness == Brightness.dark ? Colors.grey[800] : Colors.grey[100],
+                            borderRadius: BorderRadius.circular(8),
+                          ),
+                          child: Icon(
+                            Icons.image_not_supported,
+                            color: theme.brightness == Brightness.dark ? Colors.grey[600] : Colors.grey[400],
+                            size: 32,
+                          ),
+                        );
+                      },
+                      loadingBuilder: (context, child, loadingProgress) {
+                        if (loadingProgress == null) return child;
+                        return Container(
+                          width: 80,
+                          height: 80,
+                          decoration: BoxDecoration(
+                            color: theme.brightness == Brightness.dark ? Colors.grey[800] : Colors.grey[100],
+                            borderRadius: BorderRadius.circular(8),
+                          ),
+                          child: Center(
+                            child: CircularProgressIndicator(
+                              value: loadingProgress.expectedTotalBytes != null
+                                  ? loadingProgress.cumulativeBytesLoaded / loadingProgress.expectedTotalBytes!
+                                  : null,
+                              strokeWidth: 2,
+                              color: theme.brightness == Brightness.dark ? Colors.white : Colors.black,
+                            ),
+                          ),
+                        );
+                      },
+                    )
+                  : Icon(
+                      Icons.image_not_supported,
+                      color: theme.brightness == Brightness.dark ? Colors.grey[600] : Colors.grey[400],
+                      size: 32,
+                    ),
+            ),
           ),
           const SizedBox(width: 16),
           

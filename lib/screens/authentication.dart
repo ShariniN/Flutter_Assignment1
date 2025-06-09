@@ -43,7 +43,7 @@ class _AuthScreenState extends State<AuthScreen> {
   }
 
   void _navigateToStore() {
-    Navigator.pushReplacement(
+    Navigator.push(
       context,
       MaterialPageRoute(builder: (context) => ElectronicsStore()),
     );

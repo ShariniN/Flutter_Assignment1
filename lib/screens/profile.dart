@@ -329,7 +329,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
           fontSize: 12,
         ),
       ),
-      trailing: Icon(Icons.arrow_forward_ios, size: 16, color: Colors.grey[400]),
+      trailing: Icon(Icons.arrow_back_ios, size: 16, color: Colors.grey[400]),
     );
   }
 
