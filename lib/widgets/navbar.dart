@@ -284,15 +284,7 @@ class _NavigationLayoutState extends State<NavigationLayout> {
               Icons.search,
               color: isDark ? Colors.white : Colors.black87,
             ),
-            onPressed: () {
-              ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(
-                  content: Text('Search functionality coming soon!'),
-                  duration: Duration(seconds: 2),
-                  backgroundColor: Color(0xFF5A5CE6),
-                ),
-              );
-            },
+            onPressed: () {},
           ),
           IconButton(
             icon: Icon(
@@ -301,9 +293,6 @@ class _NavigationLayoutState extends State<NavigationLayout> {
             ),
             onPressed: _navigateToCart,
           ),
-          if (widget.additionalActions != null)
-            ...widget.additionalActions!,
-          SizedBox(width: 8),
         ],
       ),
       body: widget.body,

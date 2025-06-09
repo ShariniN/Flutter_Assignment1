@@ -1,212 +1,5 @@
 import 'package:flutter/material.dart';
 
-void main() {
-  runApp(ElectronicsApp());
-}
-
-class ElectronicsApp extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'TechStore',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-        scaffoldBackgroundColor: Colors.white,
-        fontFamily: 'Roboto',
-      ),
-      home: OnboardingScreen(),
-      debugShowCheckedModeBanner: false,
-    );
-  }
-}
-
-class OnboardingScreen extends StatefulWidget {
-  @override
-  _OnboardingScreenState createState() => _OnboardingScreenState();
-}
-
-class _OnboardingScreenState extends State<OnboardingScreen> {
-  PageController _pageController = PageController();
-  int currentIndex = 0;
-
-  final List<OnboardingItem> onboardingItems = [
-    OnboardingItem(
-      title: "Latest Electronics",
-      description: "Discover cutting-edge smartphones, laptops, and gadgets from top brands worldwide",
-      image: "📱",
-    ),
-    OnboardingItem(
-      title: "Secure Shopping",
-      description: "Shop with confidence using our secure payment system and buyer protection",
-      image: "🔒",
-    ),
-    OnboardingItem(
-      title: "Fast Delivery",
-      description: "Get your electronics delivered quickly with our express shipping options",
-      image: "🚚",
-    ),
-  ];
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      body: Container(
-        padding: EdgeInsets.only(top: 50),
-        child: Column(
-          children: [
-            Expanded(
-              child: ListView.builder(
-                controller: _pageController,
-                scrollDirection: Axis.horizontal,
-                itemCount: onboardingItems.length,
-                itemBuilder: (context, index) {
-                  return SizedBox(
-                    width: MediaQuery.of(context).size.width,
-                    child: OnboardingPage(item: onboardingItems[index]),
-                  );
-                },
-              ),
-            ),
-            Padding(
-              padding: EdgeInsets.all(20),
-              child: Column(
-                children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: List.generate(
-                      onboardingItems.length,
-                      (index) => Container(
-                        margin: EdgeInsets.symmetric(horizontal: 4),
-                        height: 8,
-                        width: currentIndex == index ? 24 : 8,
-                        decoration: BoxDecoration(
-                          color: currentIndex == index
-                              ? Colors.blue
-                              : Colors.grey[300],
-                          borderRadius: BorderRadius.circular(4),
-                        ),
-                      ),
-                    ),
-                  ),
-                  SizedBox(height: 30),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      TextButton(
-                        onPressed: () {
-                          Navigator.pushReplacement(
-                            context,
-                            MaterialPageRoute(builder: (context) => AuthScreen()),
-                          );
-                        },
-                        child: Text("Skip", style: TextStyle(color: Colors.grey[600])),
-                      ),
-                      ElevatedButton(
-                        onPressed: () {
-                          if (currentIndex == onboardingItems.length - 1) {
-                            Navigator.pushReplacement(
-                              context,
-                              MaterialPageRoute(builder: (context) => AuthScreen()),
-                            );
-                          } else {
-                            setState(() {
-                              currentIndex++;
-                            });
-                            _pageController.animateToPage(
-                              currentIndex,
-                              duration: Duration(milliseconds: 300),
-                              curve: Curves.easeInOut,
-                            );
-                          }
-                        },
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: Colors.blue,
-                          padding: EdgeInsets.symmetric(horizontal: 32, vertical: 16),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(25),
-                          ),
-                        ),
-                        child: Text(
-                          currentIndex == onboardingItems.length - 1 ? "Get Started" : "Next",
-                          style: TextStyle(color: Colors.white, fontSize: 16),
-                        ),
-                      ),
-                    ],
-                  ),
-                ],
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-}
-
-class OnboardingPage extends StatelessWidget {
-  final OnboardingItem item;
-
-  const OnboardingPage({required this.item});
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: EdgeInsets.all(40),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Container(
-            height: 200,
-            width: 200,
-            decoration: BoxDecoration(
-              color: Colors.blue[50],
-              borderRadius: BorderRadius.circular(100),
-            ),
-            child: Center(
-              child: Text(
-                item.image,
-                style: TextStyle(fontSize: 80),
-              ),
-            ),
-          ),
-          SizedBox(height: 50),
-          Text(
-            item.title,
-            style: TextStyle(
-              fontSize: 28,
-              fontWeight: FontWeight.bold,
-              color: Colors.black87,
-            ),
-            textAlign: TextAlign.center,
-          ),
-          SizedBox(height: 20),
-          Text(
-            item.description,
-            style: TextStyle(
-              fontSize: 16,
-              color: Colors.grey[600],
-              height: 1.5,
-            ),
-            textAlign: TextAlign.center,
-          ),
-        ],
-      ),
-    );
-  }
-}
-
-class OnboardingItem {
-  final String title;
-  final String description;
-  final String image;
-
-  OnboardingItem({
-    required this.title,
-    required this.description,
-    required this.image,
-  });
-}
-
 class AuthScreen extends StatefulWidget {
   @override
   _AuthScreenState createState() => _AuthScreenState();
@@ -248,13 +41,15 @@ class _AuthScreenState extends State<AuthScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    
     return Scaffold(
       body: Container(
         padding: EdgeInsets.only(top: 50),
         child: SingleChildScrollView(
           child: Padding(
             padding: EdgeInsets.all(24),
-            child: ListView(
+            child: Column(
               children: [
                 SizedBox(height: 40),
                 Column(
@@ -263,7 +58,7 @@ class _AuthScreenState extends State<AuthScreen> {
                       height: 80,
                       width: 80,
                       decoration: BoxDecoration(
-                        color: Colors.blue,
+                        color: theme.primaryColor,
                         borderRadius: BorderRadius.circular(20),
                       ),
                       child: Icon(
@@ -278,7 +73,7 @@ class _AuthScreenState extends State<AuthScreen> {
                       style: TextStyle(
                         fontSize: 32,
                         fontWeight: FontWeight.bold,
-                        color: Colors.black87,
+                        color: theme.textTheme.bodyLarge?.color,
                       ),
                     ),
                     SizedBox(height: 8),
@@ -288,7 +83,7 @@ class _AuthScreenState extends State<AuthScreen> {
                 
                 Container(
                   decoration: BoxDecoration(
-                    color: Colors.grey[100],
+                    color: theme.cardColor,
                     borderRadius: BorderRadius.circular(25),
                   ),
                   child: Row(
@@ -301,14 +96,14 @@ class _AuthScreenState extends State<AuthScreen> {
                           child: Container(
                             padding: EdgeInsets.symmetric(vertical: 16),
                             decoration: BoxDecoration(
-                              color: isLogin ? Colors.blue : Colors.transparent,
+                              color: isLogin ? theme.primaryColor : Colors.transparent,
                               borderRadius: BorderRadius.circular(25),
                             ),
                             child: Text(
                               "Login",
                               textAlign: TextAlign.center,
                               style: TextStyle(
-                                color: isLogin ? Colors.white : Colors.grey[600],
+                                color: isLogin ? Colors.white : theme.textTheme.bodyMedium?.color,
                                 fontWeight: FontWeight.w600,
                               ),
                             ),
@@ -323,14 +118,14 @@ class _AuthScreenState extends State<AuthScreen> {
                           child: Container(
                             padding: EdgeInsets.symmetric(vertical: 16),
                             decoration: BoxDecoration(
-                              color: !isLogin ? Colors.blue : Colors.transparent,
+                              color: !isLogin ? theme.primaryColor : Colors.transparent,
                               borderRadius: BorderRadius.circular(25),
                             ),
                             child: Text(
                               "Register",
                               textAlign: TextAlign.center,
                               style: TextStyle(
-                                color: !isLogin ? Colors.white : Colors.grey[600],
+                                color: !isLogin ? Colors.white : theme.textTheme.bodyMedium?.color,
                                 fontWeight: FontWeight.w600,
                               ),
                             ),
@@ -352,6 +147,8 @@ class _AuthScreenState extends State<AuthScreen> {
   }
 
   Widget _buildLoginForm() {
+    final theme = Theme.of(context);
+    
     return Form(
       key: _loginFormKey,
       child: Column(
@@ -402,7 +199,7 @@ class _AuthScreenState extends State<AuthScreen> {
               }
             },
             style: ElevatedButton.styleFrom(
-              backgroundColor: Colors.blue,
+              backgroundColor: theme.primaryColor,
               padding: EdgeInsets.symmetric(vertical: 16),
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(12),
@@ -419,6 +216,8 @@ class _AuthScreenState extends State<AuthScreen> {
   }
 
   Widget _buildRegisterForm() {
+    final theme = Theme.of(context);
+    
     List<Widget> formFields = [
       _buildTextField(
         controller: _registerNameController,
@@ -504,7 +303,7 @@ class _AuthScreenState extends State<AuthScreen> {
           }
         },
         style: ElevatedButton.styleFrom(
-          backgroundColor: Colors.blue,
+          backgroundColor: theme.primaryColor,
           padding: EdgeInsets.symmetric(vertical: 16),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(12),
@@ -534,6 +333,9 @@ class _AuthScreenState extends State<AuthScreen> {
     Widget? suffixIcon,
     String? Function(String?)? validator,
   }) {
+    final theme = Theme.of(context);
+    final isDark = theme.brightness == Brightness.dark;
+    
     return TextFormField(
       controller: controller,
       obscureText: obscureText,
@@ -544,22 +346,22 @@ class _AuthScreenState extends State<AuthScreen> {
         suffixIcon: suffixIcon,
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(12),
-          borderSide: BorderSide(color: Colors.grey[300]!),
+          borderSide: BorderSide(color: isDark ? Colors.grey[600]! : Colors.grey[300]!),
         ),
         enabledBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(12),
-          borderSide: BorderSide(color: Colors.grey[300]!),
+          borderSide: BorderSide(color: isDark ? Colors.grey[600]! : Colors.grey[300]!),
         ),
         focusedBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(12),
-          borderSide: BorderSide(color: Colors.blue),
+          borderSide: BorderSide(color: theme.primaryColor),
         ),
         errorBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(12),
           borderSide: BorderSide(color: Colors.red),
         ),
         filled: true,
-        fillColor: Colors.grey[50],
+        fillColor: isDark ? Colors.grey[800] : Colors.grey[50],
       ),
     );
   }

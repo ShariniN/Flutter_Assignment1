@@ -279,7 +279,7 @@ class _CheckoutPageState extends State<CheckoutPage> {
           Row(
             children: [
               Expanded(
-                child:                   TextFormField(
+                child:TextFormField(
                   controller: _expiryController,
                   decoration: InputDecoration(
                     labelText: 'MM/YY',
@@ -440,9 +440,6 @@ class _CheckoutPageState extends State<CheckoutPage> {
               if (value == null || value.trim().isEmpty) {
                 return 'Please enter your delivery address';
               }
-              if (value.trim().length < 10) {
-                return 'Please enter a complete address';
-              }
               return null;
             },
           ),
@@ -558,7 +555,7 @@ class _CheckoutPageState extends State<CheckoutPage> {
               ),
               const SizedBox(height: 12),
               Text(
-                'Thank you for your purchase. You will receive a confirmation email shortly.',
+                'Thank you for your purchase. You will receive your delivery details soon.',
                 style: theme.textTheme.bodyMedium?.copyWith(
                   color: theme.brightness == Brightness.dark ? Colors.grey[400] : Colors.grey[600],
                 ),

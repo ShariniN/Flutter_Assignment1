@@ -81,14 +81,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 color: Colors.blue[50],
                 borderRadius: BorderRadius.circular(20),
               ),
-              child: Text(
-                'Premium Member',
-                style: TextStyle(
-                  color: Colors.blue,
-                  fontSize: 12,
-                  fontWeight: FontWeight.w600,
-                ),
-              ),
             ),
           ],
         ),
@@ -227,12 +219,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
               icon: Icons.help_outline,
               title: 'Help & Support',
               subtitle: 'Get help with your account',
-            ),
-            _buildDivider(),
-            _buildMenuItem(
-              icon: Icons.info_outline,
-              title: 'About TechStore',
-              subtitle: 'Version 1.0.0',
             ),
             _buildDivider(),
             _buildMenuItem(

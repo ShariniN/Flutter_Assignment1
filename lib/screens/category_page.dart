@@ -83,11 +83,13 @@ class _CategoryPageState extends State<CategoryPage> {
       context: context,
       isScrollControlled: true,
       backgroundColor: Colors.transparent,
-      builder: (context) => _buildFiltersSheet(),
+      builder: (context) => StatefulBuilder(
+        builder: (context, setModalState) => _buildFiltersSheet(setModalState),
+      ),
     );
   }
 
-  Widget _buildFiltersSheet() {
+  Widget _buildFiltersSheet(StateSetter setModalState) {
     return Container(
       height: MediaQuery.of(context).size.height * 0.7,
       decoration: BoxDecoration(
@@ -130,9 +132,9 @@ class _CategoryPageState extends State<CategoryPage> {
             child: ListView(
               padding: EdgeInsets.all(16),
               children: [
-                _buildPriceFilter(),
+                _buildPriceFilter(setModalState),
                 SizedBox(height: 24),
-                _buildBrandFilter(),
+                _buildBrandFilter(setModalState),
               ],
             ),
           ),
@@ -168,7 +170,7 @@ class _CategoryPageState extends State<CategoryPage> {
     );
   }
 
-  Widget _buildPriceFilter() {
+  Widget _buildPriceFilter(StateSetter setModalState) {
     final priceRange = ProductData.getPriceRangeByCategory(widget.categoryType);
     
     return Column(
@@ -218,16 +220,20 @@ class _CategoryPageState extends State<CategoryPage> {
           max: priceRange['max']!,
           divisions: 50,
           onChanged: (RangeValues values) {
+            setModalState(() {
+              _priceRange = values;
+            });
             setState(() {
               _priceRange = values;
             });
+            _applyFilters();
           },
         ),
       ],
     );
   }
 
-  Widget _buildBrandFilter() {
+  Widget _buildBrandFilter(StateSetter setModalState) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -250,6 +256,13 @@ class _CategoryPageState extends State<CategoryPage> {
                 title: Text(brand),
                 value: isSelected,
                 onChanged: (bool? value) {
+                  setModalState(() {
+                    if (value == true) {
+                      _selectedBrands.add(brand);
+                    } else {
+                      _selectedBrands.remove(brand);
+                    }
+                  });
                   setState(() {
                     if (value == true) {
                       _selectedBrands.add(brand);
@@ -257,6 +270,7 @@ class _CategoryPageState extends State<CategoryPage> {
                       _selectedBrands.remove(brand);
                     }
                   });
+                  _applyFilters();
                 },
                 contentPadding: EdgeInsets.zero,
               );
@@ -303,8 +317,10 @@ class _CategoryPageState extends State<CategoryPage> {
                   borderRadius: BorderRadius.vertical(top: Radius.circular(12)),
                 ),
                 child: product.hasValidImage
-                    ? ClipRRect(
-                        borderRadius: BorderRadius.circular(8),
+                    ? Container(
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(8),
+                        ),
                         child: Image.asset(
                           product.imageUrl,
                           fit: BoxFit.contain,
@@ -348,15 +364,15 @@ class _CategoryPageState extends State<CategoryPage> {
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
                     ),
-                    Spacer(),
+                    SizedBox(height: 8),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Text(
-                          '\$${product.price.toStringAsFixed(2)}', // Fixed price display
+                          '\$${product.price.toStringAsFixed(2)}',
                           style: Theme.of(context).textTheme.titleSmall?.copyWith(
                             fontWeight: FontWeight.bold,
-                            color: Color(0xFF5A5CE6), // Changed to primary color for better visibility
+                            color: Color(0xFF5A5CE6),
                           ),
                         ),
                         Row(
@@ -497,19 +513,26 @@ class _CategoryPageState extends State<CategoryPage> {
                   )
                 : Padding(
                     padding: EdgeInsets.all(16),
-                    child: GridView.builder(
-                      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                        crossAxisCount: isLandscape ? 3 : 2,
-                        childAspectRatio: isLandscape ? 0.9 : 0.75,
-                        crossAxisSpacing: 12,
-                        mainAxisSpacing: 12,
-                      ),
-                      itemCount: _filteredProducts.length,
-                      itemBuilder: (context, index) {
-                        final product = _filteredProducts[index];
-                        return GestureDetector(
-                          onTap: () => _onProductTap(product),
-                          child: _buildProductCard(product),
+                    child: LayoutBuilder(
+                      builder: (context, constraints) {
+                        final crossAxisCount = isLandscape ? 3 : 2;
+                        final itemWidth = (constraints.maxWidth - (crossAxisCount - 1) * 12) / crossAxisCount;
+                        
+                        return GridView.builder(
+                          gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
+                            maxCrossAxisExtent: itemWidth,
+                            childAspectRatio: isLandscape ? 0.9 : 0.75,
+                            crossAxisSpacing: 12,
+                            mainAxisSpacing: 12,
+                          ),
+                          itemCount: _filteredProducts.length,
+                          itemBuilder: (context, index) {
+                            final product = _filteredProducts[index];
+                            return GestureDetector(
+                              onTap: () => _onProductTap(product),
+                              child: _buildProductCard(product),
+                            );
+                          },
                         );
                       },
                     ),

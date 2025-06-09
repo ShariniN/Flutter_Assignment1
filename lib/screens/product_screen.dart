@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import '../models/product.dart';
-import '../models/cart.dart';
+import '/models/product.dart';
+import '/models/cart.dart';
 import '/widgets/navbar.dart'; 
 import '/data/product_data.dart';
 
@@ -483,14 +483,6 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
           fit: BoxFit.cover,
           width: double.infinity,
           height: double.infinity,
-          errorBuilder: (context, error, stackTrace) {
-            print('Error displaying cached image: $error');
-            return Icon(
-              widget.product.categoryIcon,
-              size: 200,
-              color: colorScheme.onSurface,
-            );
-          },
         ),
       );
     }

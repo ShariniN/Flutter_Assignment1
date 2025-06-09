@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import '/widgets/large_product_card.dart';
 import '/widgets/navbar.dart';
 import '/data/product_data.dart';
-import '../models/product.dart';
+import '/models/product.dart';
 import 'product_screen.dart';
 
 class ElectronicsStore extends StatefulWidget {
@@ -39,9 +39,9 @@ class ElectronicsStoreState extends State<ElectronicsStore> {
         borderRadius: BorderRadius.circular(14),
         boxShadow: [
           BoxShadow(
-            color: Color(0xFF5A5CE6),
-            blurRadius: 10,
-            offset: Offset(0, 4),
+            color: Color(0xFF5A5CE6), 
+            blurRadius: 6, 
+            offset: Offset(0, 2), 
           ),
         ],
       ),
@@ -64,8 +64,10 @@ class ElectronicsStoreState extends State<ElectronicsStore> {
                   borderRadius: BorderRadius.vertical(top: Radius.circular(12)),
                 ),
                 child: product.hasValidImage
-                    ? ClipRRect(
-                        borderRadius: BorderRadius.circular(8),
+                    ? Container(
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(8),
+                        ),
                         child: Image.asset(
                           product.imageUrl,
                           fit: BoxFit.contain,
@@ -109,7 +111,7 @@ class ElectronicsStoreState extends State<ElectronicsStore> {
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
                     ),
-                    Spacer(),
+                    Flexible(child: Container()),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
@@ -155,7 +157,7 @@ class ElectronicsStoreState extends State<ElectronicsStore> {
     final featuredProducts = allProducts.take(4).toList();
     
     return NavigationLayout(
-      title: 'Electronics Store',
+      title: 'Tech Store',
       currentIndex: currentIndex,
       onTabChanged: onTabChanged,
       body: SingleChildScrollView(
@@ -236,12 +238,6 @@ class ElectronicsStoreState extends State<ElectronicsStore> {
             ),
             
             LargeProductCard(
-              title: 'PlayStation 5',
-              subtitle: '',
-              backgroundColor: isDark ? Color(0xFF2D3748) : Color(0xFFe3f2fd),
-            ),
-            
-            LargeProductCard(
               title: 'MacBook Air',
               subtitle: '',
               backgroundColor: isDark ? Color(0xFF4A5568) : Color(0xFFfff3e0),
@@ -264,9 +260,9 @@ class ElectronicsStoreState extends State<ElectronicsStore> {
                 borderRadius: BorderRadius.circular(16),
                 boxShadow: [
                   BoxShadow(
-                    color: Color(0xFF667eea),
-                    blurRadius: 10,
-                    offset: Offset(0, 4),
+                    color: Color(0xFF667eea), 
+                    blurRadius: 8, 
+                    offset: Offset(0, 2), 
                   ),
                 ],
               ),
