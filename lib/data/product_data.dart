@@ -18,6 +18,46 @@ class ProductDetails {
 }
 
 class ProductData {
+  static Map<String, ImageProvider>? _cachedImages;
+  
+  static Future<Map<String, ImageProvider>> get images async {
+    _cachedImages ??= await _loadImages();
+    return _cachedImages!;
+  }
+
+  static Future<Map<String, ImageProvider>> _loadImages() async {
+    final Map<String, ImageProvider> imageCache = {};
+    
+    final allProducts = getAllProducts();
+    final uniqueImageUrls = allProducts.map((product) => product.imageUrl).toSet();
+    
+    for (String imageUrl in uniqueImageUrls) {
+      try {
+        final imageProvider = AssetImage(imageUrl);
+        imageCache[imageUrl] = imageProvider;
+      } catch (e) {
+        print('Error loading image $imageUrl: $e');
+        imageCache[imageUrl] = const AssetImage('images/placeholder.png');
+      }
+    }
+    
+    return imageCache;
+  }
+
+  static Future<ImageProvider> getCachedImage(String imageUrl) async {
+    final imageCache = await images;
+    return imageCache[imageUrl] ?? const AssetImage('images/placeholder.png');
+  }
+
+  static void clearImageCache() {
+    _cachedImages = null;
+  }
+
+  static Future<void> refreshImageCache() async {
+    _cachedImages = null;
+    await images;
+  }
+
   static final Map<String, List<Product>> _productsByCategory = {
     'phone': [
       Product(

@@ -22,6 +22,8 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
   int selectedColorIndex = 0;
   int selectedStorageIndex = 0;
   final CartManager _cartManager = CartManager();
+  ImageProvider? _cachedImage;
+  bool _isLoadingImage = true;
 
   List<Map<String, dynamic>> get colors {
     return ProductData.getColorsByCategory(widget.product.category);
@@ -49,12 +51,33 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
     selectedColor = colors.first['name'];
     selectedStorage = variantOptions.first['size'];
     _cartManager.addListener(_updateUI);
+    _loadCachedImage();
   }
 
   @override
   void dispose() {
     _cartManager.removeListener(_updateUI);
     super.dispose();
+  }
+
+  Future<void> _loadCachedImage() async {
+    try {
+      final cachedImage = await ProductData.getCachedImage(widget.product.imageUrl);
+      if (mounted) {
+        setState(() {
+          _cachedImage = cachedImage;
+          _isLoadingImage = false;
+        });
+      }
+    } catch (e) {
+      print('Error loading cached image: $e');
+      if (mounted) {
+        setState(() {
+          _cachedImage = const AssetImage('images/placeholder.png');
+          _isLoadingImage = false;
+        });
+      }
+    }
   }
 
   void _updateUI() {
@@ -164,21 +187,7 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
               Expanded(
                 child: Padding(
                   padding: const EdgeInsets.all(20),
-                  child: widget.product.hasValidImage
-                      ? ClipRRect(
-                          borderRadius: BorderRadius.circular(12),
-                          child: Image.asset(
-                            widget.product.imageUrl,
-                            fit: BoxFit.cover,
-                            width: double.infinity,
-                            height: double.infinity,
-                          ),
-                        )
-                      : Icon(
-                          widget.product.categoryIcon,
-                          size: 200,
-                          color: colorScheme.onSurface,
-                        ),
+                  child: _buildImageWidget(colorScheme),
                 ),
               ),
               Padding(
@@ -455,6 +464,42 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
     items.add(const SizedBox(height: 100));
 
     return items;
+  }
+
+  Widget _buildImageWidget(ColorScheme colorScheme) {
+    if (_isLoadingImage) {
+      return Center(
+        child: CircularProgressIndicator(
+          color: colorScheme.onSurface,
+        ),
+      );
+    }
+
+    if (_cachedImage != null && widget.product.hasValidImage) {
+      return ClipRRect(
+        borderRadius: BorderRadius.circular(12),
+        child: Image(
+          image: _cachedImage!,
+          fit: BoxFit.cover,
+          width: double.infinity,
+          height: double.infinity,
+          errorBuilder: (context, error, stackTrace) {
+            print('Error displaying cached image: $error');
+            return Icon(
+              widget.product.categoryIcon,
+              size: 200,
+              color: colorScheme.onSurface,
+            );
+          },
+        ),
+      );
+    }
+
+    return Icon(
+      widget.product.categoryIcon,
+      size: 200,
+      color: colorScheme.onSurface,
+    );
   }
 
   String _getVariantLabel() {
